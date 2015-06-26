@@ -22,6 +22,7 @@ var AlchemyAPI = require('./alchemyapi');
 var alchemyapi = new AlchemyAPI();
 var reviewsArray;
 
+
 var searchUrl = 'http://www.yelp.com/search?find_desc='
 var searchWord = 'tacos'
 var searchString = '&find_loc=San+Francisco%2C+CA&ns=1'
@@ -35,8 +36,28 @@ var reviews = {}
 // Finds URLs on Yelp of 10 locations that match the searchWord, stores URLs in locArr[]
 // Calls 'callMany()', intermittently 
 
-function getUrls(searchWord, callback){
+// wrapper(test)
 
+function wrapper(call){
+	console.log("1")
+	call(test2);
+	
+}
+
+function test(call2){
+	console.log('test')
+	call2();
+}
+
+function test2(){
+	console.log('test2')	
+}
+
+
+
+
+function getUrls(call){
+	console.log("2")
 	searchString = searchWord + searchString
 	searchUrl += searchString
 
@@ -57,7 +78,8 @@ function getUrls(searchWord, callback){
 	    // 	requestForALoc(locArr[i]);
 	    // }
 
-	    intId = setInterval(callMany,3000);
+	    call(callback);
+	    // intId = setInterval(callMany,3000);
 	  } else {
 	  	console.log(error);
 	  }
@@ -70,14 +92,14 @@ function getUrls(searchWord, callback){
 // Note: counter starts at 1, because locArr.length == 11 but first index is not a location
 
 function callMany(){
-
+		console.log("3")
 		// console.log(counter)
-		requestForALoc()	
+		// requestForALoc(callback)	
+		requestForALoc()
 		
-		counter += 1
-		if (counter == locArr.length || counter == 12)
-			clearInterval(intId)
-	
+		// if (counter == locArr.length || counter == 2)
+		// 	clearInterval(intId)
+		// counter += 1
 }
 
 // Makes request to a particular location page and stores its reviews in locReviews[].
@@ -87,12 +109,14 @@ function callMany(){
 // stores their respective full url and array of reviews (locReviews). Also, this function
 // intermittently calls callback().
 
-function requestForALoc(){
-
+function requestForALoc(call2){
+	console.log("4")
 	var url = 'http://www.yelp.com'
 	url += locArr[counter]
 
 	var locReviews = []
+	var locSentiment = []
+	
 
 	request(url, function (error, response, html) {
 
@@ -108,14 +132,20 @@ function requestForALoc(){
 	    	// console.log(a.text())
 	    })
 	    
-	    reviews[locArr[counter]] = { "url" : url, "locReviews" : locReviews}
-	    reviewsArray = reviews[locArr[counter]]['locReviews'] 
-	    
-	    console.log(reviewsArray.length)
 
-	    intId2 = setInterval(callback, 1000);
+	    // FIX locRef ISSUE!
+	    // var locRef = ""
+
+	    reviews[locArr[counter]] = { "url" : url, "locReviews" : locReviews, "locSentiment" : locSentiment}
+	    reviewsArray = reviews[locArr[counter]]['locReviews']
+	    locRef = locArr[counter] 
+	    
+	    console.log(reviews)
+
+	    // intId2 = setInterval(callback, 1000);
 
 	    // console.log(reviews["/biz/little-star-pizza-san-francisco"])
+	    call2()
 
 	  } else {
 	    	console.log(error)
@@ -130,21 +160,33 @@ function callback(){
 
 				// stop interval HERE????
 
-				if(counter2 == reviewsArray.length + 1){
-					counter2 = 0;
-					clearInterval(intId2)
-				}
+				// if(counter2 == reviewsArray.length + 1){
+				// 	counter2 = 0;
+				// 	clearInterval(intId2)
+				// }
 
-				var myText = reviewsArray[counter2]
-				counter2 += 1;
+				var myText = reviewsArray[counter2]	
+				
 				
 				alchemyapi.sentiment("text", myText, {}, function(response) {
 				
 					console.log("Sentiment: " + response["docSentiment"]["score"]);
+					reviews[locRef]['locSentiment'].push(response["docSentiment"]["score"])
+					console.log(locRef + ": " + reviews[locRef]['locSentiment'])
+
+					counter2 += 1;
+					if(counter2 <= reviewsArray.length){
+						callback()
+					} else if (counter <= locArr.length){
+						counter += 1;
+						counter2 = 0;
+						requestForALoc(callback)
+					}
 
 				});
 	
 	
 }
 
-getUrls(searchWord)
+
+getUrls(requestForALoc)
