@@ -1,0 +1,30 @@
+<% include ../partials/header %>
+<!DOCTYPE html>
+	<form id='newPlaceForm' action="/places" method="POST">
+		<div>
+			<label for="name">Name:</label>
+			<input type="text" name="name" id="name" autofocus>
+		</div>
+		<div>
+			<label for="city">City, State:</label>
+			<input type="text" name="city" id="city">
+		</div>
+		<!-- <div>
+			<label for="phone">Phone:</label>
+			<input type="text" name="phone" id="phone">
+		</div>
+		<div>
+			<label for="gRating">Google+ Rating:</label>
+			<input type="text" name="gRating" id="gRating">
+		</div>
+		<div>
+			<label for="yRating">Yelp Rating:</label>
+			<input type="text" name="yRating" id="yRating">
+		</div> -->
+		<div>
+			<input type="submit" value="Search!">
+		</div>
+	</form>
+
+	<div id='map-canvas'></div>
+<% include ../partials/footer %>
