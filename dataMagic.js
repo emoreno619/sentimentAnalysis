@@ -4,7 +4,7 @@ var str = ""
 var categoryScores = []
 
 function reader(call){
-	fs.readFile('/tmp/reviewData', 'utf8', function (err,data) {
+	fs.readFile('/tmp/reviewData4', 'utf8', function (err,data) {
 	  if (err) {
 	    return console.log(err);
 	  }
@@ -12,7 +12,8 @@ function reader(call){
 	  data.arr.forEach(function(aLoc){
 	  	// console.log(aLoc.locSentiment)
 	  	aLoc.locSentiment.forEach(function(score){
-	  		categoryScores.push(score)
+	  		if(score)
+	  			categoryScores.push(score)
 
 	  	})
 	  })
@@ -32,7 +33,7 @@ function writer(){
 		}
 	})
 
-	fs.appendFile("/tmp/tacosScores", str, function(err) {
+	fs.appendFile("/tmp/sandwichScores", str, function(err) {
 	    if(err) {
 	        return console.log(err);
 	    }

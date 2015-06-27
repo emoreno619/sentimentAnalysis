@@ -122,8 +122,10 @@ app.post('/yelp', function(req,res){
 	yelp.search({term: req.body.name, location: "San Francisco"}, function(error, data) {
 	  console.log(error);
 	  console.log("OAKLAND DATA")
-	  // console.log(data);
-	  console.log( "Name: " + data.businesses[0].name + " Rating: " + data.businesses[0].rating + " Phone: " + data.businesses[0].phone)
+	  // STORE this url.
+	  // CALL scrape.js with this url, to get sentiment scores for its reviews, calculate star-rating based on sentiment scores
+	  console.log(data.businesses[0].url);
+	  // console.log( "Name: " + data.businesses[0].name + " Rating: " + data.businesses[0].rating + " Phone: " + data.businesses[0].phone)
 	  res.send(data)
 	});
 

@@ -3,7 +3,7 @@ var cheerio = require('cheerio');
 
 var fs = require('fs');
 
-var counter = 1;
+var counter = 10;
 var counter2 = 0;
 
 
@@ -13,7 +13,7 @@ var reviewsArray;
 
 
 var searchUrl = 'http://www.yelp.com/search?find_desc='
-var searchWord = 'tacos'
+var searchWord = 'sandwiches'
 var searchString = '&find_loc=San+Francisco%2C+CA&ns=1'
 var intId;
 var intId2;
@@ -21,6 +21,7 @@ var locArr = []
 
 
 var reviews = {}
+reviews.arr = []
 
 // Finds URLs on Yelp of 10 locations that match the searchWord, stores URLs in locArr[]
 // Calls 'callMany()', intermittently 
@@ -85,13 +86,14 @@ function requestForALoc(call2){
 	    	
 	    })
 	    
-
-	    reviews[locArr[counter]] = { "url" : url, "locReviews" : locReviews, "locSentiment" : locSentiment}
-	    reviewsArray = reviews[locArr[counter]]['locReviews']
+	    aCounter = counter-1;
+	    reviews.arr.push({ "url" : url, "locReviews" : locReviews, "locSentiment" : locSentiment})
+	    reviewsArray = reviews.arr[0]["locReviews"]
 	    locRef = locArr[counter] 
 
-	    console.log(locReviews)
-	    call2()
+	    // console.log(locReviews)
+	    // if(counter != 0)
+	    	call2()
 
 	  } else {
 	    	console.log(error)
@@ -108,11 +110,11 @@ function callback(){
 				
 				
 				alchemyapi.sentiment("text", myText, {}, function(response) {
-				
+					
 					// console.log(response)
 					console.log("Sentiment: " + response["docSentiment"]["score"]);
-					reviews[locRef]['locSentiment'].push(response["docSentiment"]["score"])
-					console.log(locRef + ": " + reviews[locRef]['locSentiment'])
+					reviews.arr[0]['locSentiment'].push(response["docSentiment"]["score"])
+					console.log(locRef + ": " + reviews.arr[0]['locSentiment'])
 
 					counter2 += 1;
 					if(counter2 <= reviewsArray.length){
@@ -125,7 +127,7 @@ function callback(){
 					// } 
 					else {
 						var toSave = JSON.stringify(reviews);
-						fs.appendFile("/tmp/reviewData", toSave, function(err) {
+						fs.appendFile("/tmp/reviewData4", toSave, function(err) {
 						    if(err) {
 						        return console.log(err);
 						    }
