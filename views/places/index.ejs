@@ -1,12 +1,14 @@
 <% include ../partials/header %>
-	<h1>Lemme see your places!</h1>
-	<% places.forEach(function(place){ %>
-		<p>
-			<a href="/places/<%= place._id%>"><%= place.name %></a>
-		</p>
-	<% }) %>
-	<a href="/login">Login!</a>
-	<a href="/places/new">Add a new place!</a>
+	<div id='nav'>
+		<h1>Lemme see your places!</h1>
+		<% places.forEach(function(place){ %>
+			<p>
+				<a href="/places/<%= place._id%>"><%= place.name %></a>
+			</p>
+		<% }) %>
+		<a href="/login">Login!</a>
+		<a href="/places/new">Add a new place!</a>
+	</div>
 	<div id="wrapper">
 		<div id="savedPlacesEnd">
 			<form id='searchPlaceForm' action="/places" method="POST">

@@ -7,6 +7,9 @@ $(function(){
 	var location = sanFrancisco
 	var ids = []
 
+	$('#nav').css('width', '100%')
+	$('#nav p').css('float', 'none')
+
 	$('#searchPlaceForm').submit(function(e){
 		e.preventDefault();
 		ids = []
@@ -83,9 +86,9 @@ $(function(){
 				$('#'+ phoneId).attr('class', 'aPlace ' + aResult.rating)
 			else
 				$('#'+ phoneId).attr('class', 'aPlace noRating')
-			$('#map-canvas').css('width', '82%').css('float', 'left').css('border', '2px solid black').css('border-radius', '2%')
+			$('#map-canvas').css('width', '80%').css('float', 'right').css('border', '2px solid black').css('border-radius', '2%')
 			$('#wrapper').css('width', '18%').css('float', 'left')
-			$('#'+ phoneId).css('border', '2px solid black').css('width', '80%').css('margin', '10px').css('float', 'none').css('border-radius', '2%').css('padding-left', '10%')
+			$('#'+ phoneId).css('border', '2px solid black').css('width', '80%').css('margin', '5%').css('float', 'none').css('border-radius', '2%').css('padding-left', '2%')
 			$('#formStyle label').css('width', '50%').css('padding-top', '3%').css('padding-left', '3%')
 			$('#formStyle input').css('width', '90%').css('margin-left', '5%')
 			$('#submitButton').css('padding-top', '3%').css('padding-bottom', '3%')
