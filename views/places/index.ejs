@@ -7,5 +7,36 @@
 	<% }) %>
 	<a href="/login">Login!</a>
 	<a href="/places/new">Add a new place!</a>
+	<div id="wrapper">
+		<div id="savedPlacesEnd">
+			<form id='searchPlaceForm' action="/places" method="POST">
+				<div id='formStyle'>
+					<div>
+						<label for="name">Name:</label>
+						<input type="text" name="name" id="name" autofocus>
+					</div>
+					<div>
+						<label for="city">City:</label>
+						<input type="text" name="city" id="city">
+					</div>
+					<!-- <div>
+						<label for="phone">Phone:</label>
+						<input type="text" name="phone" id="phone">
+					</div>
+					<div>
+						<label for="gRating">Google+ Rating:</label>
+						<input type="text" name="gRating" id="gRating">
+					</div>
+					<div>
+						<label for="yRating">Yelp Rating:</label>
+						<input type="text" name="yRating" id="yRating">
+					</div> -->
+					<div id='submitButton'>
+						<input type="submit" value="Search!">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 	<div id="map-canvas"></div>
 <% include ../partials/footer %>

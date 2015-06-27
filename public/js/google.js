@@ -7,11 +7,13 @@ $(function(){
 	var location = sanFrancisco
 	var ids = []
 
-	$('#newPlaceForm').submit(function(e){
+	$('#searchPlaceForm').submit(function(e){
 		e.preventDefault();
 		ids = []
 		$('.aPlace').remove()
 		formData.name = $('#name').val();
+		//need to create google.maps.LatLng object from city search to be stored
+		//request.location below and map.center
 		formData.city = $('#city').val();
 		
 
@@ -23,12 +25,12 @@ $(function(){
 	  
 
 	  map = new google.maps.Map(document.getElementById('map-canvas'), {
-	      center: sanFrancisco,
+	      center: location,
 	      zoom: 15
 	    });
 
 	  var request = {
-	    location: sanFrancisco,
+	    location: location,
 	    radius: '500',
 	    query: formData.name
 	  };
@@ -75,14 +77,19 @@ $(function(){
 	function createResultsDiv(aResult){
 		if (aResult.formatted_phone_number){
 			var phoneId = aResult.formatted_phone_number.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~() ]/g,"")
-			$('#newPlaceForm').append('<div id=' + phoneId + '>' + aResult.name + '</div>')
+			$('#savedPlacesEnd').append('<div id=' + phoneId + '>' + aResult.name + '</div>')
 			console.log('GOOGLE COORD: lat: ' + aResult.geometry.location.A + ' long: ' + aResult.geometry.location.F)
 			if (aResult.rating)
 				$('#'+ phoneId).attr('class', 'aPlace ' + aResult.rating)
 			else
 				$('#'+ phoneId).attr('class', 'aPlace noRating')
-			$('#'+ phoneId).css('border', '2px solid black').css('margin', '10px')
-			
+			$('#map-canvas').css('width', '82%').css('float', 'left').css('border', '2px solid black').css('border-radius', '2%')
+			$('#wrapper').css('width', '18%').css('float', 'left')
+			$('#'+ phoneId).css('border', '2px solid black').css('width', '80%').css('margin', '10px').css('float', 'none').css('border-radius', '2%').css('padding-left', '10%')
+			$('#formStyle label').css('width', '50%').css('padding-top', '3%').css('padding-left', '3%')
+			$('#formStyle input').css('width', '90%').css('margin-left', '5%')
+			$('#submitButton').css('padding-top', '3%').css('padding-bottom', '3%')
+			$('#formStyle').css('margin-right', '4%').css('border', '2px solid black').css('border-radius', '2%')
 			
 		}
 	}

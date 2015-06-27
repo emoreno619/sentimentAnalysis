@@ -1,17 +1,6 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
-
-var express = require("express"),
-app = express(),
-bodyParser = require("body-parser"),
-methodOverride = require("method-override"),
-morgan = require("morgan"),
-db = require('./models'),
-dotenv = require('dotenv').load(),
-session = require("cookie-session"),
-loginMiddleware = require("./middleware/loginHelper"),
-routeMiddleware = require("./middleware/routeHelper");
 var fs = require('fs');
 
 var counter = 1;
@@ -36,26 +25,6 @@ var reviews = {}
 // Finds URLs on Yelp of 10 locations that match the searchWord, stores URLs in locArr[]
 // Calls 'callMany()', intermittently 
 
-// wrapper(test)
-
-function wrapper(call){
-	console.log("1")
-	call(test2);
-	
-}
-
-function test(call2){
-	console.log('test')
-	call2();
-}
-
-function test2(){
-	console.log('test2')	
-}
-
-
-
-
 function getUrls(call){
 	console.log("2")
 	searchString = searchWord + searchString
@@ -70,16 +39,10 @@ function getUrls(call){
 	    	locArr.push(a.attr('href'))
 	    	// console.log(a.attr('href'))
 	    })
-	    // console.log(locArr)
-	
-	//NEED THIS
-	    // for (var i = 1; i < locArr.length; i++){
-	    	
-	    // 	requestForALoc(locArr[i]);
-	    // }
+	    console.log(locArr)
 
 	    call(callback);
-	    // intId = setInterval(callMany,3000);
+	    
 	  } else {
 	  	console.log(error);
 	  }
@@ -91,16 +54,6 @@ function getUrls(call){
 // once each location has been requested (i.e., counter == locArr.length + 1) 
 // Note: counter starts at 1, because locArr.length == 11 but first index is not a location
 
-function callMany(){
-		console.log("3")
-		// console.log(counter)
-		// requestForALoc(callback)	
-		requestForALoc()
-		
-		// if (counter == locArr.length || counter == 2)
-		// 	clearInterval(intId)
-		// counter += 1
-}
 
 // Makes request to a particular location page and stores its reviews in locReviews[].
 // The reviews (inside of locReviews[]) are then stored in an object ('reviews') along
@@ -127,24 +80,17 @@ function requestForALoc(call2){
 
 	    	var a = $(this).children('p')
 
-	    	// locArr.push(a.attr('href'))
+	    	
 	    	locReviews.push(a.text())
-	    	// console.log(a.text())
+	    	
 	    })
 	    
-
-	    // FIX locRef ISSUE!
-	    // var locRef = ""
 
 	    reviews[locArr[counter]] = { "url" : url, "locReviews" : locReviews, "locSentiment" : locSentiment}
 	    reviewsArray = reviews[locArr[counter]]['locReviews']
 	    locRef = locArr[counter] 
-	    
-	    console.log(reviews)
 
-	    // intId2 = setInterval(callback, 1000);
-
-	    // console.log(reviews["/biz/little-star-pizza-san-francisco"])
+	    console.log(locReviews)
 	    call2()
 
 	  } else {
@@ -158,18 +104,12 @@ function requestForALoc(call2){
 
 function callback(){
 
-				// stop interval HERE????
-
-				// if(counter2 == reviewsArray.length + 1){
-				// 	counter2 = 0;
-				// 	clearInterval(intId2)
-				// }
-
 				var myText = reviewsArray[counter2]	
 				
 				
 				alchemyapi.sentiment("text", myText, {}, function(response) {
 				
+					// console.log(response)
 					console.log("Sentiment: " + response["docSentiment"]["score"]);
 					reviews[locRef]['locSentiment'].push(response["docSentiment"]["score"])
 					console.log(locRef + ": " + reviews[locRef]['locSentiment'])
@@ -177,10 +117,21 @@ function callback(){
 					counter2 += 1;
 					if(counter2 <= reviewsArray.length){
 						callback()
-					} else if (counter <= locArr.length){
-						counter += 1;
-						counter2 = 0;
-						requestForALoc(callback)
+					} 
+					// else if (counter < locArr.length -1){
+					// 	counter += 1;
+					// 	counter2 = 0;
+					// 	requestForALoc(callback)
+					// } 
+					else {
+						var toSave = JSON.stringify(reviews);
+						fs.appendFile("/tmp/reviewData", toSave, function(err) {
+						    if(err) {
+						        return console.log(err);
+						    }
+
+						    console.log("The file was saved!");
+						}); 
 					}
 
 				});
