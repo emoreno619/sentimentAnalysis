@@ -4,8 +4,9 @@
 // 	   4) RESTful routes and authorization crap for CRUD
 // 	   5) Include 'Is Open' info in search results 
 // 	   6) Continue with data sentiment stuff...include reviews for multiple pages in scrape? Include G+ reviews for sentiment?
-//		  Dynamic scrape to be compared with decile rule of sentiment? 
+//		  Dynamic scrape to be compared with decile rule of sentiment? Analysis of relation among G+ scores and Y scores?
 //     7) Actually match the two api calls via phone number?
+// 	   8) Offer sort options of search results?
 
 $(function(){
 	var map;
@@ -137,6 +138,8 @@ $(function(){
 	}
 
 	function ajaxYelpShenanigans(div){
+		//PASS LOCATION AS PART OF 'toSend'
+
 		var toSend = {}
 		
 		var str = div.html()
