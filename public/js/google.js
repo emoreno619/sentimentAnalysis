@@ -82,35 +82,49 @@ $(function(){
 	function createResultsDiv(aResult){
 		if (aResult.formatted_phone_number){
 			var phoneId = aResult.formatted_phone_number.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~() ]/g,"")
-			$('#savedPlacesEnd').append('<div id=' + phoneId + '>' + aResult.name + ' <a id=toggle>see more</a></div>')
+			
+			$('#savedPlacesEnd').append('<div id=' + phoneId + '><h3>' + aResult.name + '</h3> <a id=toggle>see more</a></div>')
+
+			var div = $('#'+ phoneId)
+			var gPrice; 
+
+			if(aResult.price_level){
+				gPrice = aResult.price_level
+				div.append("<div id=gPrice> Price: " + gPrice + " / 5</div>")
+			} else {
+				div.append("<div id=gPrice> Price: No Price Info</div>")
+			}
 			// console.log('GOOGLE COORD: lat: ' + aResult.geometry.location.A + ' long: ' + aResult.geometry.location.F)
 			if (aResult.rating)
 				$('#'+ phoneId).attr('class', 'aPlace ' + aResult.rating + ' ' + aResult.user_ratings_total)
 			else
 				$('#'+ phoneId).attr('class', 'aPlace noRating')
 
-			var div = $('#'+ phoneId)
+	
 
-			
 			if(!div.hasClass('noRating')){
 				var classes = div.attr('class').split(" ")
-				
 				div.append("<div id=gRating> Google+ Rating: " + classes[1] + " (" + classes[2] + " reviews)</div>")
+
 			} else {
 				div.append("<div id=gRating> Google+ Rating: No Rating </div>")
 			}
 
 			ajaxYelpShenanigans(div);
-
-			$('#map-canvas').css('width', '80%').css('float', 'right').css('border', '2px solid black').css('border-radius', '2%')
-			$('#wrapper').css('width', '18%').css('float', 'left')
-			$('#'+ phoneId).css('border', '2px solid black').css('width', '80%').css('margin', '5%').css('float', 'none').css('border-radius', '2%').css('padding-left', '2%')
-			$('#formStyle label').css('width', '50%').css('padding-top', '3%').css('padding-left', '3%')
-			$('#formStyle input').css('width', '90%').css('margin-left', '5%')
-			$('#submitButton').css('padding-top', '3%').css('padding-bottom', '3%')
-			$('#formStyle').css('margin-right', '4%').css('border', '2px solid black').css('border-radius', '2%')
+			styleThoseResults(phoneId);
 			
 		}
+	}
+
+	function styleThoseResults(phoneId){
+		$('#map-canvas').css('width', '70%').css('float', 'right').css('border', '2px solid black').css('border-radius', '2%')
+		$('#wrapper').css('width', '28%').css('float', 'left')
+		$('#savedPlacesEnd').css('height', '305px').css('overflow-y','auto').css('margin-top', '2%')
+		$('#'+ phoneId).css('border', '2px solid black').css('width', '80%').css('margin', '5%').css('float', 'none').css('border-radius', '2%').css('padding-left', '2%')
+		$('#formStyle label').css('width', '50%').css('padding-top', '3%').css('padding-left', '3%')
+		$('#formStyle input').css('width', '90%').css('margin-left', '5%')
+		$('#submitButton').css('padding-top', '3%').css('padding-bottom', '3%')
+		$('#formStyle').css('margin-right', '4%').css('border', '2px solid black').css('border-radius', '2%')
 	}
 
 	function ajaxYelpShenanigans(div){
