@@ -51,7 +51,7 @@ if (require.main === module) {
 		});
 	} else {
 		console.log('Are you trying to set the key? Make sure to use: node alchemyapi.js YOUR_KEY_HERE');
-		// process.exit(1);
+		process.exit(1);
 	}
 }
 
@@ -61,7 +61,8 @@ function AlchemyAPI() {
 
 	//Load the key from api_key.txt
 	try {
-		key = fs.readFileSync(__dirname + '/api_key.txt').toString().trim();
+		key = process.env.ALCHEMY
+    // fs.readFileSync(__dirname + '/api_key.txt').toString().trim();
 	}
 	catch(err) {
 		//Create the file
