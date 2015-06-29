@@ -124,6 +124,22 @@ app.post('/places', function(req,res){
 
 //Show
 
+app.put('/places/fav/:id', function(req,res){
+	db.Place.findById(req.params.id, function(err,place){
+		db.User.findByIdAndUpdate(req.session.id, {}, function(err,user){
+			if(err){
+				console.log(err);
+				res.render("places/show")
+			} else {
+				user.favPlaces.push(place)
+				user.save(function(err){
+					res.redirect("/places/" + req.params.id)
+				})
+			}
+		})
+	})
+})
+
 app.get('/places/:id', function(req,res){
 	db.Place.findById(req.params.id, function(err, place){
 		db.Review.find(
@@ -176,7 +192,7 @@ app.delete('/places/:id', function(req,res){
 // Index
 app.get('/places/:place_id/reviews', function(req,res){
 	db.Place.findById(req.params.place_id).populate('reviews').exec(function(err,place){
-		res.render("reviews/index", {place:place});
+			res.render("reviews/index", {place:place});
 	});
 });
 
@@ -202,12 +218,20 @@ app.post('/places/:place_id/reviews', routeMiddleware.ensureLoggedIn, function(r
 			db.Place.findById(req.params.place_id,function(err,place){
 				place.reviews.push(review);
 				review.place = place.id;
-				
-				review.save(function(err){
-					place.save(function(err){
-						res.redirect("/places/"+ req.params.place_id)
+
+				db.User.findById(req.session.id, function(err,user){
+					
+					user.Reviews.push(review)
+
+					review.save(function(err){
+						place.save(function(err){
+							user.save(function(err){
+								res.redirect("/places/"+ req.params.place_id)
+							});
+						});
 					});
-				});
+
+				})
 			});
 		}
 	});
@@ -225,7 +249,7 @@ app.get('/places/:place_id/reviews/:id', function(req,res){
 
 // Edit
 //TODO: auth!!
-app.get("/places/:place_id/reviews/:id/edit", routeMiddleware.ensureCorrectPoster, function(req,res){
+app.get("/places/:place_id/reviews/:id/edit", routeMiddleware.ensureCorrectReviewer, function(req,res){
 	db.Review.findById(req.params.id)
 	.populate('place')
 	.exec(function(err,review){
@@ -266,7 +290,11 @@ app.delete('/places/:place_id/reviews/:id', function(req,res){
 // TODO: auth only for admin!
 app.get('/users', function(req,res){
 	db.User.find({}, function(err, users){
-		res.render("users/index", {users:users});
+		db.Review.find({}, function(err, reviews){
+			db.Place.find({}, function(err, places){
+				res.render("users/index", {users:users, reviews:reviews, places:places});
+			})
+		})
 	});
 });
 
@@ -274,13 +302,15 @@ app.get('/users', function(req,res){
 // TODO: auth!
 app.get('/users/:id', function(req,res){
 	db.User.findById(req.params.id, function(err, user){
-		db.Review.find(
-		{
-			_id: {$in: user.Reviews}
-		},
-		function(err,reviews){
-			res.render('users/show', {user:user, reviews:reviews}) //include comments on user show page?
-		});
+		db.Place.find({}, function(err,places){
+			db.Review.find(
+			{
+				_id: {$in: user.Reviews}
+			},
+			function(err,reviews){
+				res.render('users/show', {user:user, reviews:reviews, places:places}) //include comments on user show page?
+			});
+		})
 	});
 });
 

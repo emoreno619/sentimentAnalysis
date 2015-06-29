@@ -17,8 +17,20 @@
         <% users.forEach(function(user){ %>
           <tr>
           <td><a href="/users/<%= user.id%>"><%= user.email%></a></td>
-          <td><% user.favPlaces.forEach(function(favPlace){ %><a href="/places/<%= favPlace.place._id%>"><%= favPlace.name%><% }) %></td>
-          <td><% user.Reviews.forEach(function(review){ %> <a href="/places/<%= review.place._id%>/reviews/<%= review.id%>"><%= review.title%></a><% }) %></td>
+          <td>
+            <% user.favPlaces.forEach(function(favPlace){ %>
+              <% places.forEach(function(aPlace){ if (aPlace.id == favPlace){ %>
+                <a href="/places/<%= aPlace.id%>"><%= aPlace.name%></a>
+                <% if(places.length > 1){ %>, <% } %>
+            <% }})}) %>
+          </td>
+          <td>
+            <% user.Reviews.forEach(function(review){ %>
+               <% reviews.forEach(function(aReview){ if (aReview.id == review){ %>
+                  <a href="/places/<%= aReview.place%>/reviews/<%= aReview.id%>"><%= aReview.title%></a>
+                  <% if(reviews.length > 1){ %>, <% } %>
+            <% }})}) %>
+          </td>
           <td><a href="/users/<%= user.id%>/edit">Edit</a></td>
           <td>
             <form action='/users/<%= user.id %>?_method=DELETE' method="POST">

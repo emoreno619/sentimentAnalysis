@@ -1,4 +1,4 @@
-// var db = require("../models");
+var db = require("../models");
 var routeHelpers = {
   ensureLoggedIn: function(req, res, next) {
     if (req.session.id !== null && req.session.id !== undefined) {
@@ -27,6 +27,19 @@ var routeHelpers = {
       // console.log(post.ownerId)
       console.log(req.session.id)
       if (place.creator !== req.session.id) {
+        res.redirect('/');
+      }
+      else {
+       return next();
+      }
+    });
+  },
+
+  ensureCorrectReviewer: function(req, res, next) {
+    db.Review.findById(req.params.id, function(err,review){
+      // console.log(post.ownerId)
+      console.log(req.session.id)
+      if (review.creator !== req.session.id) {
         res.redirect('/');
       }
       else {

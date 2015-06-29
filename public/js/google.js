@@ -1,12 +1,13 @@
 //TODO 1) Make names in search results into links to show page or marker?... on show page, include yelp and g+ reviews, more details like hours
 // 	   2) Maps stuff....allow location to be set in form, fix markers, get browser location
 // 	   3) Fix header so that favorite (i.e., saved) locations are shown horizontally...allow horizontal scroll
-// 	   4) RESTful routes and authorization crap for CRUD
+// 	   4) Show logged in username on each page and log in/out as appropriate
 // 	   5) Include 'Is Open' info in search results 
 // 	   6) Continue with data sentiment stuff...include reviews for multiple pages in scrape? Include G+ reviews for sentiment?
 //		  Dynamic scrape to be compared with decile rule of sentiment? Analysis of relation among G+ scores and Y scores?
 //     7) Actually match the two api calls via phone number?
 // 	   8) Offer sort options of search results?
+// 	   9) Create link to favorite a place for a user
 
 $(function(){
 	var map;
