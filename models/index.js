@@ -6,4 +6,4 @@ module.exports.Place = require("./place");
 module.exports.User = require("./user");
 module.exports.gReview = require("./gReview");
 module.exports.yReview = require("./yReview");
-module.exports.yReview = require("./sentiReview");
+module.exports.Review = require("./review");

@@ -3,7 +3,7 @@ var cheerio = require('cheerio');
 
 var fs = require('fs');
 
-var counter = 10;
+var counter =1;
 var counter2 = 0;
 
 
@@ -13,7 +13,7 @@ var reviewsArray;
 
 
 var searchUrl = 'http://www.yelp.com/search?find_desc='
-var searchWord = 'sandwiches'
+var searchWord = 'sushi'
 var searchString = '&find_loc=San+Francisco%2C+CA&ns=1'
 var intId;
 var intId2;
@@ -42,7 +42,7 @@ function getUrls(call){
 	    })
 	    console.log(locArr)
 
-	    call(callback);
+	    // call(callback);
 	    
 	  } else {
 	  	console.log(error);
@@ -64,41 +64,43 @@ function getUrls(call){
 // intermittently calls callback().
 
 function requestForALoc(call2){
-	console.log("4")
-	var url = 'http://www.yelp.com'
-	url += locArr[counter]
+	if(counter != locArr.length -1) {
+		var url = 'http://www.yelp.com'
+		url += locArr[counter]
 
-	var locReviews = []
-	var locSentiment = []
-	
+		var locReviews = []
+		var locSentiment = []
+		
 
-	request(url, function (error, response, html) {
+		request(url, function (error, response, html) {
 
-	  if (!error && response.statusCode == 200) {
-	    var $ = cheerio.load(html);
-	    // console.log(html);
-	    $('div.review-content').each(function(i, element){
+		  if (!error && response.statusCode == 200) {
+		    var $ = cheerio.load(html);
+		    // console.log(html);
+		    $('div.review-content').each(function(i, element){
 
-	    	var a = $(this).children('p')
+		    	var a = $(this).children('p')
 
-	    	
-	    	locReviews.push(a.text())
-	    	
-	    })
-	    
-	    aCounter = counter-1;
-	    reviews.arr.push({ "url" : url, "locReviews" : locReviews, "locSentiment" : locSentiment})
-	    reviewsArray = reviews.arr[0]["locReviews"]
-	    locRef = locArr[counter] 
+		    	
+		    	locReviews.push(a.text())
+		    	
+		    })
+		    
+		    aCounter = counter-1;
+		    reviews.arr.push({ "url" : url, "locReviews" : locReviews, "locSentiment" : locSentiment})
+		    reviewsArray = reviews.arr[aCounter]["locReviews"]
+		    locRef = locArr[counter] 
 
-	    // console.log(locReviews)
-	    // if(counter != 0)
-	    	call2()
+		    // console.log(locReviews.length)
+		    // console.log(locReviews[40])
+		    // if(counter != 0)
+		    	call2()
 
-	  } else {
-	    	console.log(error)
-	    }
-	});
+		  } else {
+		    	console.log(error)
+		    }
+		});
+	}
 }
 
 // Makes request to Alchemy API for sentiment analysis of each review for a location.
@@ -113,21 +115,23 @@ function callback(){
 					
 					// console.log(response)
 					console.log("Sentiment: " + response["docSentiment"]["score"]);
-					reviews.arr[0]['locSentiment'].push(response["docSentiment"]["score"])
-					console.log(locRef + ": " + reviews.arr[0]['locSentiment'])
+					reviews.arr[aCounter]['locSentiment'].push(response["docSentiment"]["score"])
+					console.log(locRef + ": " + reviews.arr[aCounter]['locSentiment'])
 
 					counter2 += 1;
-					if(counter2 <= reviewsArray.length){
+					if(counter2 < reviewsArray.length){
+						
 						callback()
 					} 
-					// else if (counter < locArr.length -1){
-					// 	counter += 1;
-					// 	counter2 = 0;
-					// 	requestForALoc(callback)
-					// } 
+					else if (counter < 2){
+						
+						counter += 1;
+						counter2 = 0;
+						requestForALoc(callback)
+					} 
 					else {
 						var toSave = JSON.stringify(reviews);
-						fs.appendFile("/tmp/reviewData4", toSave, function(err) {
+						fs.appendFile("/tmp/reviewData7", toSave, function(err) {
 						    if(err) {
 						        return console.log(err);
 						    }

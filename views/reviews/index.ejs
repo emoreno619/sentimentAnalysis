@@ -1,0 +1,20 @@
+<% include ../partials/header2 %>
+  <h1><a href="/places/<%= place._id%>"><%= place.name%></a>'s reviews:</h1>
+  <% place.reviews.forEach(function(review){ %>
+    <p>
+      <%= review.title %>
+    </p>
+    <p>
+      <%= review.rating %>
+    </p>
+    <p>
+      <a href="/places/<%= place._id%>/reviews/<%= review.id%>">More about this review</a>
+    </p>
+  <% })%>
+  <a href="/places/<%= place.id%>/reviews/new">Add a new review!</a>
+
+  <p>
+    <a href="/places">See all posts</a>
+  </p>
+<% include ../partials/footer %>
+

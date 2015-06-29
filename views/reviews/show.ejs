@@ -1,0 +1,21 @@
+<% include ../partials/header2 %>
+  <h1>A review of <%= review.place.name %></h1>
+    <div>
+      <h2> Review Details:</h2>
+      <h3>
+        <%= review.title%> <%= review.creator%>
+      </h3>
+      <h2><%= review.rating %></h2>
+      <p>
+        <%= review.body%>
+      </p>
+    </div>
+    <div>
+      <p>
+         <a href="/places/<%= review.place._id%>/reviews/<%= review._id%>/edit">Edit this review</a>
+      </p>
+      <form action="/places/<%= review.place._id%>/reviews/<%= review._id%>?_method=DELETE" method="POST">
+        <input type="submit" value="DELETE">
+      </form>
+    </div>
+<% include ../partials/footer %>

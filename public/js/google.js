@@ -120,7 +120,7 @@ $(function(){
 				div.append("<div id=gRating> Google+ Rating: No Rating </div>")
 			}
 
-			ajaxYelpShenanigans(div);
+			ajaxYelpShenanigans(div, aResult);
 			styleThoseResults(phoneId);
 			
 		}
@@ -137,7 +137,7 @@ $(function(){
 		$('#formStyle').css('margin-right', '4%').css('border', '2px solid black').css('border-radius', '2%')
 	}
 
-	function ajaxYelpShenanigans(div){
+	function ajaxYelpShenanigans(div, aResult){
 		//PASS LOCATION AS PART OF 'toSend'
 
 		var toSend = {}
@@ -165,8 +165,8 @@ $(function(){
 			  	// if(!div.hasClass('noRating')){
 			  		// console.log("YELP COORD " + "Latitude: " + datas.businesses[0].location.coordinate.latitude + " Longitude: " + datas.businesses[0].location.coordinate.longitude)
 			  		div.append("<div id=yRating> Yelp Rating: " + datas.businesses[0].rating + " (" + datas.businesses[0].review_count + " reviews)" +"</div>")
-			  		div.append('<div id=address style="display: none;">'+ datas.businesses[0].location.address +'</div>')
-			  		div.append('<div id=phoneNum style="display: none;">Phone: '+ datas.businesses[0].phone +'</div>')
+			  		div.append('<div id=address style="display: none;">'+ aResult.formatted_address +'</div>')
+			  		div.append('<div id=phoneNum style="display: none;">Phone: '+ aResult.formatted_phone_number +'</div>')
 			  	// } else {
 			  	// 	div.append("<div id=gRating> Yelp Rating: No Rating </div>")
 			  	// }

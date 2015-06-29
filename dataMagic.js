@@ -4,7 +4,7 @@ var str = ""
 var categoryScores = []
 
 function reader(call){
-	fs.readFile('/tmp/reviewData4', 'utf8', function (err,data) {
+	fs.readFile('/tmp/reviewData5', 'utf8', function (err,data) {
 	  if (err) {
 	    return console.log(err);
 	  }
@@ -33,7 +33,7 @@ function writer(){
 		}
 	})
 
-	fs.appendFile("/tmp/sandwichScores", str, function(err) {
+	fs.appendFile("/tmp/icecreamScores", str, function(err) {
 	    if(err) {
 	        return console.log(err);
 	    }

@@ -39,6 +39,194 @@ app.get('/', function(req,res){
 	res.redirect('/places')
 })
 
+
+//Index
+app.get('/places', function(req,res){
+	db.Place.find({}, function(err, places){
+		res.render("places/index", {places:places});
+	});
+});
+
+//New
+
+app.get('/places/new', function(req, res){
+	res.render('places/new');
+});
+
+// Google Places API Stuff
+
+
+
+// Create
+
+// TODO: need to include creator in object parameter to create
+
+app.post('/places', function(req,res){
+	db.Place.create({name: req.body.name, address: req.body.address, city: req.body.city, state: req.body.state, phone: req.body.phone}, 
+		function(err, place){
+			if(err){
+				console.log(err);
+				res.render('places/new')
+			}
+			else {
+
+
+
+				// url = "http://api.yelp.com/v2/search?term=" + req.body.name + "&location=San+Francisco"; 
+
+				// request.get(url, function(error, response, body){
+				// 	if(!error && response.statusCode === 200){
+				// 	  var geoData = JSON.parse(body);
+					
+				// })
+				// console.log(place);
+				// console.log(req.session._id);
+				place.creator = req.session.id;
+				place.save(function(err){
+					if (err) throw err;
+					res.redirect('/places');
+				});
+		}
+	});
+});
+
+//Show
+
+app.get('/places/:id', function(req,res){
+	db.Place.findById(req.params.id, function(err, place){
+		db.Review.find(
+		{
+			_id: {$in: place.reviews}
+		},
+		function(err,reviews){
+			res.render('places/show', {place:place, reviews:reviews})
+		});
+	});
+});
+
+// Edit
+// TODO: auth!	
+app.get('/places/:place_id/edit', function(req,res){
+	db.Place.findById(req.params.place_id, function(err, place){
+		res.render('places/edit', {place:place});
+	});
+});
+
+// Update
+// TODO: need to include creator in object parameter to findbyidandupdate
+// maybe not? since the user id will not have changed
+app.put('/places/:id', function(req,res){
+	db.Place.findByIdAndUpdate(req.params.id, {name: req.body.name, address: req.body.address, phone: req.body.phone, city: req.body.city, state: req.body.state}, function(err, place){
+		if(err){
+			res.render("places/edit")
+		} else {
+			res.redirect('/places')
+		}
+	})
+})
+
+// Destroy
+// TODO: auth! or at least for whichever view will display this form
+app.delete('/places/:id', function(req,res){
+	db.Place.findById(req.params.id, function(err,place){
+		if(err){
+			console.log(err);
+			res.render("places/show")
+		} else {
+			place.remove();
+			res.redirect("/places")
+		}
+	})
+})
+
+// Reviews routes
+
+// Index
+app.get('/places/:place_id/reviews', function(req,res){
+	db.Place.findById(req.params.place_id).populate('reviews').exec(function(err,place){
+		res.render("reviews/index", {place:place});
+	});
+});
+
+// New
+
+//TODO: auth!!
+app.get('/places/:place_id/reviews/new', function(req,res){
+	db.Place.findById(req.params.place_id, function(err,place){
+		res.render('reviews/new', {place:place});
+	});
+});
+
+// Create
+
+//TODO: auth!!
+app.post('/places/:place_id/reviews', function(req,res){
+	db.Review.create({creator: req.session.id, title:req.body.title, body:req.body.body, rating:req.body.rating}, function (err, review){
+		if(err){
+			console.log(err)
+			res.render("reviews/new");
+		} else {
+			console.log(review)
+			db.Place.findById(req.params.place_id,function(err,place){
+				place.reviews.push(review);
+				review.place = place.id;
+				
+				review.save(function(err){
+					place.save(function(err){
+						res.redirect("/places/"+ req.params.place_id)
+					});
+				});
+			});
+		}
+	});
+});
+
+// SHOW
+app.get('/places/:place_id/reviews/:id', function(req,res){
+  db.Review.findById(req.params.id)
+    .populate('place')
+    .exec(function(err,review){
+      console.log(review.place)
+      res.render("reviews/show", {review:review});
+    });
+});
+
+// Edit
+//TODO: auth!!
+app.get("/places/:place_id/reviews/:id/edit", function(req,res){
+	db.Review.findById(req.params.id)
+	.populate('place')
+	.exec(function(err,review){
+		res.render("reviews/edit", {review:review});
+	});
+});
+
+// Update
+
+//TODO: Not redirecting correctly!!!
+app.put('/places/:place_id/reviews/:id', function(req,res){
+	db.Review.findByIdAndUpdate(req.params.id, {title:req.body.title, body:req.body.body, rating:req.body.rating}, function(err,review){
+		if(err){
+			res.render("reviews/edit");
+		} else {
+			res.redirect('/places/' + req.params.place_id + '/reviews');
+		}
+	});
+});
+
+// Destroy
+
+app.delete('/places/:place_id/reviews/:id', function(req,res){
+	db.Review.findByIdAndRemove(req.params.id, function (err, review){
+		if(err){
+			console.log(err);
+			res.render('reviews/edit')
+		} else {
+			res.redirect("/places/" + req.params.place_id + "/reviews");
+		}
+	})
+})
+
 //alchemy test
 app.get('/alchemy', function(req,res){
 	
@@ -125,6 +313,7 @@ app.post('/yelp', function(req,res){
 	  // STORE this url.
 	  // CALL scrape.js with this url, to get sentiment scores for its reviews, calculate star-rating based on sentiment scores
 	  console.log(data.businesses[0].url);
+	  
 	  // console.log( "Name: " + data.businesses[0].name + " Rating: " + data.businesses[0].rating + " Phone: " + data.businesses[0].phone)
 	  res.send(data)
 	});
@@ -138,57 +327,6 @@ app.post('/yelp', function(req,res){
 
 	
 })
-
-//Index
-app.get('/places', function(req,res){
-	db.Place.find({}, function(err, places){
-		res.render("places/index", {places:places});
-	});
-});
-
-//New
-
-app.get('/places/new', function(req, res){
-	res.render('places/new');
-});
-
-// Google Places API Stuff
-
-
-
-// Create
-
-// TODO: need to include creator in object parameter to create
-
-app.post('/places', function(req,res){
-	db.Place.create({name: req.body.name, address: req.body.address, phone: req.body.phone, gRating: req.body.gRating, yRating: req.body.yRating}, 
-		function(err, place){
-			if(err){
-				console.log(err);
-				res.render('places/new')
-			}
-			else {
-
-
-
-				// url = "http://api.yelp.com/v2/search?term=" + req.body.name + "&location=San+Francisco"; 
-
-				// request.get(url, function(error, response, body){
-				// 	if(!error && response.statusCode === 200){
-				// 	  var geoData = JSON.parse(body);
-					
-				// })
-				// console.log(place);
-				// console.log(req.session._id);
-				
-				// place.save(function(err){
-				// 	if (err) throw err;
-				// 	res.redirect('/places');
-				// });
-		}
-	});
-});
-
 
 // Start Server
 

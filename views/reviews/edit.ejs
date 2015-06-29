@@ -1,0 +1,23 @@
+<% include ../partials/header2 %>
+  <h1>Review of <%= review.place.name%></h1>
+  <form action="/places/<%= review.place.id%>/reviews/<%= review.id %>?_method=put" method="POST">
+    <div>
+      <label for="title">Title:</label>
+      <input autofocus  type="text" name="title" id="title" value="<%= review.title %>">
+    </div>
+    <div>
+      <label for="body">Body:</label>
+      <input autofocus  type="text" name="body" id="body" value="<%= review.body %>">
+    </div>
+    <div>
+      <label for="rating">Rating: (1 - 5, e.g., 3.7) </label>
+      <input type="text" name="rating" id="rating" value="<%= review.rating %>">
+    </div>
+    <div>
+      <input type="submit" value="Edit!">
+    </div>
+  </form>
+  <form action="/places/<%= review.place._id %>/reviews/<%= review.id %>?_method=DELETE" method="POST">
+    <input type="submit" value="DELETE">
+  </form>
+<% include ../partials/footer %>
