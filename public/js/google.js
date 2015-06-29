@@ -18,7 +18,8 @@ $(function(){
 	var location = sanFrancisco
 	var ids = []
 
-	$('#nav').css('width', '100%')
+	$('#savedPlaces p').css('max-height', '10%')
+	$('#savedPlaces').css('margin-bottom', '10px')
 	$('#nav p').css('float', 'none')
 
 	$('#searchPlaceForm').submit(function(e){
