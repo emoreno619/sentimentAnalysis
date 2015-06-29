@@ -259,7 +259,7 @@ app.get("/places/:place_id/reviews/:id/edit", routeMiddleware.ensureCorrectRevie
 
 // Update
 
-//TODO: Not redirecting correctly!!!
+
 app.put('/places/:place_id/reviews/:id', function(req,res){
 	db.Review.findByIdAndUpdate(req.params.id, {title:req.body.title, body:req.body.body, rating:req.body.rating}, function(err,review){
 		if(err){
@@ -288,7 +288,7 @@ app.delete('/places/:place_id/reviews/:id', function(req,res){
 // Index
 
 // TODO: auth only for admin!
-app.get('/users', function(req,res){
+app.get('/users', routeMiddleware.ensureAdmin ,function(req,res){
 	db.User.find({}, function(err, users){
 		db.Review.find({}, function(err, reviews){
 			db.Place.find({}, function(err, places){
@@ -316,9 +316,13 @@ app.get('/users/:id', function(req,res){
 
 // Edit
 // TODO: auth! users can only edit themselves (except for admin?)	
-app.get('/users/:id/edit', function(req,res){
+app.get('/users/:id/edit', routeMiddleware.ensureCorrectUser, function(req,res){
 	db.User.findById(req.params.id, function(err, user){
-		res.render('users/edit', {user:user});
+		db.Place.find({}, function(err,places){
+			db.Review.find({}, function(err, reviews){
+				res.render('users/edit', {user:user, places:places, reviews:reviews});
+			})
+		})
 	});
 });
 
@@ -326,7 +330,7 @@ app.get('/users/:id/edit', function(req,res){
 // TODO: need to include creator in object parameter to findbyidandupdate
 // maybe not? since the user id will not have changed
 app.put('/users/:id', function(req,res){
-	db.User.findByIdAndUpdate(req.params.id, {email: req.body.email, favPlaces: req.body.favPlaces}, function(err, user){
+	db.User.findByIdAndUpdate(req.params.id, {email: req.body.user.email}, function(err, user){
 		if(err){
 			res.render("users/edit")
 		} else {

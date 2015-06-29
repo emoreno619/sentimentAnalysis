@@ -9,11 +9,24 @@ var routeHelpers = {
     }
   },
 
+  ensureAdmin: function(req, res, next) {
+    db.User.findById(req.params.id, function(err,user){
+      // console.log(post.ownerId)
+      console.log(req.session.id)
+      if ("5591c78003211eaa88add917" !== req.session.id) {
+        res.redirect('/');
+      }
+      else {
+       return next();
+      }
+    });
+  },
+
   ensureCorrectUser: function(req, res, next) {
     db.User.findById(req.params.id, function(err,user){
       // console.log(post.ownerId)
       console.log(req.session.id)
-      if (user._id !== req.session.id) {
+      if (user.id !== req.session.id) {
         res.redirect('/');
       }
       else {
