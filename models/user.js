@@ -20,15 +20,10 @@ var userSchema = new mongoose.Schema({
               type: mongoose.Schema.Types.ObjectId,
               ref: "Place"
             }],
-						
-            gReviews: [{
-							type: mongoose.Schema.Types.ObjectId,
-							ref: "gReview"
-						}],
 
-            yReviews: [{
+            Reviews: [{
               type: mongoose.Schema.Types.ObjectId,
-              ref: "yReview"
+              ref: "Review"
             }]
 
 					});

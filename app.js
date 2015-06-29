@@ -29,7 +29,43 @@ app.use(loginMiddleware);
 
 //Login Routes
 
-// TODO
+app.get('/signup', routeMiddleware.preventLoginSignup, function(req, res){
+  res.render('users/signup');
+})
+
+app.post("/signup", routeMiddleware.preventLoginSignup, function(req,res){
+  var newUser = req.body.user;
+  db.User.create(newUser, function(err, user){
+      if(user){
+        req.login(user);
+        res.redirect("/users/" + user._id)
+      } else {
+        console.log(err);
+        res.render("users/signup")
+      }
+    }
+  )
+})
+
+app.get("/login", routeMiddleware.preventLoginSignup, function(req,res){
+  res.render("users/login");
+})
+
+app.post("/login", function(req,res){
+  db.User.authenticate(req.body.user, function (err, user){
+    if(!err && user !== null){
+      req.login(user)
+      res.redirect("/users/" + user._id)
+    } else {
+      res.render("users/login")
+    }
+  })
+})
+
+app.get("/logout", function(req,res){
+  req.logout();
+  res.redirect("/");
+})
 
 //Place Routes
 
@@ -49,13 +85,9 @@ app.get('/places', function(req,res){
 
 //New
 
-app.get('/places/new', function(req, res){
+app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req, res){
 	res.render('places/new');
 });
-
-// Google Places API Stuff
-
-
 
 // Create
 
@@ -106,7 +138,7 @@ app.get('/places/:id', function(req,res){
 
 // Edit
 // TODO: auth!	
-app.get('/places/:place_id/edit', function(req,res){
+app.get('/places/:place_id/edit', routeMiddleware.ensureCorrectPoster, function(req,res){
 	db.Place.findById(req.params.place_id, function(err, place){
 		res.render('places/edit', {place:place});
 	});
@@ -151,7 +183,7 @@ app.get('/places/:place_id/reviews', function(req,res){
 // New
 
 //TODO: auth!!
-app.get('/places/:place_id/reviews/new', function(req,res){
+app.get('/places/:place_id/reviews/new', routeMiddleware.ensureLoggedIn, function(req,res){
 	db.Place.findById(req.params.place_id, function(err,place){
 		res.render('reviews/new', {place:place});
 	});
@@ -160,7 +192,7 @@ app.get('/places/:place_id/reviews/new', function(req,res){
 // Create
 
 //TODO: auth!!
-app.post('/places/:place_id/reviews', function(req,res){
+app.post('/places/:place_id/reviews', routeMiddleware.ensureLoggedIn, function(req,res){
 	db.Review.create({creator: req.session.id, title:req.body.title, body:req.body.body, rating:req.body.rating}, function (err, review){
 		if(err){
 			console.log(err)
@@ -193,7 +225,7 @@ app.get('/places/:place_id/reviews/:id', function(req,res){
 
 // Edit
 //TODO: auth!!
-app.get("/places/:place_id/reviews/:id/edit", function(req,res){
+app.get("/places/:place_id/reviews/:id/edit", routeMiddleware.ensureCorrectPoster, function(req,res){
 	db.Review.findById(req.params.id)
 	.populate('place')
 	.exec(function(err,review){
@@ -223,6 +255,66 @@ app.delete('/places/:place_id/reviews/:id', function(req,res){
 			res.render('reviews/edit')
 		} else {
 			res.redirect("/places/" + req.params.place_id + "/reviews");
+		}
+	})
+})
+
+// User Routes
+
+// Index
+
+// TODO: auth only for admin!
+app.get('/users', function(req,res){
+	db.User.find({}, function(err, users){
+		res.render("users/index", {users:users});
+	});
+});
+
+// Show
+// TODO: auth!
+app.get('/users/:id', function(req,res){
+	db.User.findById(req.params.id, function(err, user){
+		db.Review.find(
+		{
+			_id: {$in: user.Reviews}
+		},
+		function(err,reviews){
+			res.render('users/show', {user:user, reviews:reviews}) //include comments on user show page?
+		});
+	});
+});
+
+// Edit
+// TODO: auth! users can only edit themselves (except for admin?)	
+app.get('/users/:id/edit', function(req,res){
+	db.User.findById(req.params.id, function(err, user){
+		res.render('users/edit', {user:user});
+	});
+});
+
+// Update
+// TODO: need to include creator in object parameter to findbyidandupdate
+// maybe not? since the user id will not have changed
+app.put('/users/:id', function(req,res){
+	db.User.findByIdAndUpdate(req.params.id, {email: req.body.email, favPlaces: req.body.favPlaces}, function(err, user){
+		if(err){
+			res.render("users/edit")
+		} else {
+			res.redirect('/users/' + user._id)
+		}
+	})
+})
+
+// Destroy
+// TODO: auth! or at least for whichever view will display this form
+app.delete('users/:id', function(req,res){
+	db.User.findById(req.params.id, function(err,user){
+		if(err){
+			console.log(err);
+			res.render("users/show")
+		} else {
+			post.remove();
+			res.redirect("/login")
 		}
 	})
 })
@@ -326,6 +418,12 @@ app.post('/yelp', function(req,res){
 	// });
 
 	
+})
+
+// Catch All
+
+app.get('*', function(req,res){
+	res.render('404');
 })
 
 // Start Server

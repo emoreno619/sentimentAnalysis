@@ -1,0 +1,25 @@
+<% include ../partials/header2 %>
+  <h1>More about <%= user.email%>'s Account</h1>
+
+  <h3>
+    Email: <%= user.email%>
+  </h3>
+  <h3>
+    Photo: <img src="<%= user.photo%>" alt="Flag" width=200 height=200>
+  </h3>
+  <h3>
+    <a href="/users/<%= user.id%>/edit">Edit <%= user.email%></a>
+  </h3>
+  <h3>Posts
+
+    <% user.posts.forEach(function(post){ %>
+      <h4 class="text-muted"><a href="/posts/<%= post.id %>"></a><%= post%></h4>
+    <% })%>
+  </h3>
+  <h3>
+    <form action='/users/<%= user.id %>?_method=DELETE' method="POST">
+      <input type="submit" value="DELETE" class="btn btn-danger">
+    </form>
+  </h3>
+
+<% include ../partials/footer %>
