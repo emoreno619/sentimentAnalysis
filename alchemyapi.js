@@ -51,7 +51,7 @@ if (require.main === module) {
 		});
 	} else {
 		console.log('Are you trying to set the key? Make sure to use: node alchemyapi.js YOUR_KEY_HERE');
-		process.exit(1);
+		// process.exit(1);
 	}
 }
 
