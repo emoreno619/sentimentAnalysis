@@ -1,6 +1,6 @@
 var dotenv = require('dotenv').load(),
 mongoose = require("mongoose");
-mongoose.connect("mongodb://" + process.env.DB_HOST);
+mongoose.connect( process.env.MONGOLAB_URI || "mongodb://" + process.env.DB_HOST);
 // mongoose.connect("mongodb://localhost/sentimentAnalysis")
 module.exports.Place = require("./place");
 module.exports.User = require("./user");
