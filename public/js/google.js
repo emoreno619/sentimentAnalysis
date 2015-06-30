@@ -7,7 +7,7 @@
 //		  Dynamic scrape to be compared with decile rule of sentiment? Analysis of relation among G+ scores and Y scores?
 //     7) Actually match the two api calls via phone number?
 // 	   8) Offer sort options of search results?
-// 	   9) Create link to favorite a place for a user
+// 	   9) Create link to favorite place for a user
 
 $(function(){
 	var map;
@@ -17,9 +17,10 @@ $(function(){
 	var sanFrancisco = new google.maps.LatLng(37.7833,-122.4167);
 	var location = sanFrancisco
 	var ids = []
+	var divArr = []
 
-	$('#savedPlaces p').css('max-height', '10%')
-	$('#savedPlaces').css('margin-bottom', '10px')
+	$('#savedPlaces p').css('max-height', '10%').css('padding', '2px')
+	$('#savedPlaces').css('margin-bottom', '10px').css('border', '2px solid black').css('border-radius', '3px')
 	$('#nav p').css('float', 'none')
 
 	$('#searchPlaceForm').submit(function(e){
@@ -94,10 +95,10 @@ $(function(){
 	function createResultsDiv(aResult){
 		if (aResult.formatted_phone_number){
 			var phoneId = aResult.formatted_phone_number.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~() ]/g,"")
-			
-			$('#savedPlacesEnd').append('<div id=' + phoneId + '><h3>' + aResult.name + '</h3> <a id=toggle>see more</a></div>')
-
+			var name4Class = encodeURI(aResult.name)
+			var one = $('#savedPlacesEnd').append('<div id=' + phoneId + ' ' + 'class=' + name4Class + '><h3>' + aResult.name + '</h3> <a id=toggle>see more</a></div>')
 			var div = $('#'+ phoneId)
+			console.log(div)
 			var gPrice; 
 
 			if(aResult.price_level){
@@ -122,7 +123,7 @@ $(function(){
 				div.append("<div id=gRating> Google+ Rating: No Rating </div>")
 			}
 
-			ajaxYelpShenanigans(div, aResult);
+			ajaxYelpShenanigans(div, aResult,phoneId);
 			styleThoseResults(phoneId);
 			
 		}
@@ -139,18 +140,18 @@ $(function(){
 		$('#formStyle').css('margin-right', '4%').css('border', '2px solid black').css('border-radius', '2%')
 	}
 
-	function ajaxYelpShenanigans(div, aResult){
+	function ajaxYelpShenanigans(div, aResult,phoneId){
 		//PASS LOCATION AS PART OF 'toSend'
 
 		var toSend = {}
 		
 		var str = div.html()
-		var index = str.indexOf('<')
-		str = str.substring(0, index)
-		
+		var index = str.indexOf('</')
+		str = str.substring(4, index)
+		console.log('HI IM HTML' + str)
 		toSend.phone = div.attr('id')
 		toSend.name = str;
-		// console.log(toSend)
+		console.log(toSend)
 		// yelpCall(toSend);
 		if(!div.has('#yRating').length){
 			$.ajax({
@@ -159,19 +160,28 @@ $(function(){
 			  data: toSend,
 			  dataType: 'json'
 			}).done(function(datas) {
-			  // $('#newpuppyform').remove();
-			  // $('#newpuppylink').show();
-			  // loadLocations();
-			  // console.log( datas.businesses[0].name + " " + datas.businesses[0].rating + " " + datas.businesses[0].phone)
+			 // console.log(datas)
 			  if(!div.has('#yRating').length){
-			  	// if(!div.hasClass('noRating')){
-			  		// console.log("YELP COORD " + "Latitude: " + datas.businesses[0].location.coordinate.latitude + " Longitude: " + datas.businesses[0].location.coordinate.longitude)
-			  		div.append("<div id=yRating> Yelp Rating: " + datas.businesses[0].rating + " (" + datas.businesses[0].review_count + " reviews)" +"</div>")
+			  		// console.log(datas.businesses.length)
+			  		// datas.forEach(function(aPlace){
+			  		// 	// console.log(aPlace.name)
+			  		// 	// console.log(aResult.name)
+			  		// 	// console.log(aPlace.phone)
+			  		// 	// console.log(phoneId)
+			  		// 	if(aPlace.phone){
+			  		// 		var phon = aPlace.phone.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~() ]/g,"")
+				  	// 		if(phoneId == phon){
+				  	// 			div.append("<div id=yRating> Yelp Rating: " + aPlace.rating + " (" + aPlace.review_count + " reviews)" +"</div>")
+				  	// 			div.append('<div id=address style="display: none;">'+ aResult.formatted_address +'</div>')
+				  	// 			div.append('<div id=phoneNum style="display: none;">Phone: '+ aResult.formatted_phone_number +'</div>')
+				  	// 		}
+				  	// 	}
+			  		// })
+					// console.log(datas)
+					div.append("<div id=yRating> Yelp Rating: " + datas[0].rating + " (" + datas[0].review_count + " reviews)" +"</div>")
 			  		div.append('<div id=address style="display: none;">'+ aResult.formatted_address +'</div>')
 			  		div.append('<div id=phoneNum style="display: none;">Phone: '+ aResult.formatted_phone_number +'</div>')
-			  	// } else {
-			  	// 	div.append("<div id=gRating> Yelp Rating: No Rating </div>")
-			  	// }
+			  		
 			  }
 			});
 		}

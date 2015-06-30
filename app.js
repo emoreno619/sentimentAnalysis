@@ -406,7 +406,7 @@ app.get('/yelp', function(req,res){
 	yelp.search({term: "trueburger", location: "Oakland"}, function(error, data) {
 	  console.log(error);
 	  console.log("OAKLAND DATA")
-	  console.log(data.businesses[0].location.coordinate);
+	  // console.log(data.businesses[0].location.coordinate);
 	  // console.log( "Name: " + data.businesses[0].name + " Rating: " + data.businesses[0].rating + " Phone: " + data.businesses[0].phone)
 	});
 
@@ -438,10 +438,14 @@ app.post('/yelp', function(req,res){
 	  console.log("OAKLAND DATA")
 	  // STORE this url.
 	  // CALL scrape.js with this url, to get sentiment scores for its reviews, calculate star-rating based on sentiment scores
-	  console.log(data.businesses[0].url);
+	  // console.log(data.businesses[0].phone);
+	  data.businesses.forEach(function(aPlace){
+	  	// console.log(aPlace)
+	  })
 	  
 	  // console.log( "Name: " + data.businesses[0].name + " Rating: " + data.businesses[0].rating + " Phone: " + data.businesses[0].phone)
-	  res.send(data)
+
+	  res.send(data.businesses)
 	});
 
 	// See http://www.yelp.com/developers/documentation/v2/business

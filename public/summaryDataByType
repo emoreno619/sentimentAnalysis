@@ -1,0 +1,27 @@
+> summary(bars)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-0.8228  0.1600  0.4084  0.3699  0.6481  0.9680 
+> summary(chinese)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.94160  0.01219  0.32660  0.25510  0.54580  0.94790 
+> summary(sushi)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.69580  0.08679  0.40670  0.32810  0.61450  0.96570 
+> summary(icecream)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-0.6759  0.1024  0.3259  0.3104  0.5924  0.9651 
+> summary(sandwiches)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.89690  0.04047  0.32330  0.26350  0.56240  0.97030 
+> summary(tacos)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.79600  0.04143  0.29530  0.27270  0.59750  0.94450 
+> summary(pizza)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.79050  0.07665  0.33360  0.28690  0.56560  0.95350
+
+
+
+> summary(total)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.94160  0.06845  0.34490  0.29440  0.58680  0.97030 

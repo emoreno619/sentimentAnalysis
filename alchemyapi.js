@@ -17,6 +17,7 @@
 
 var http = require('http');
 var fs = require('fs');
+var dotenv = require('dotenv').load();
 
 
 //Make the class available
