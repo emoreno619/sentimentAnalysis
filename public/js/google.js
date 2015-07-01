@@ -45,14 +45,69 @@ $(function(){
 	      zoom: 15
 	    });
 
-	  var request = {
-	    location: location,
-	    radius: '500',
-	    query: formData.name
-	  };
+	  // Try HTML5 geolocation
+	  if(formData.city){
+	        	console.log("GOT THERE")
+	        	address = formData.city
+	        	geocoder = new google.maps.Geocoder();
+	        	geocoder.geocode( { 'address': address}, function(results, status) {
+	        	      if (status == google.maps.GeocoderStatus.OK) {
+	        	        
+	        	        location = results[0].geometry.location
+	        	        console.log(location)
+	        	        map.setCenter(results[0].geometry.location);
 
-	  service = new google.maps.places.PlacesService(map);
-	  service.textSearch(request, callback);
+	        	        var request = {
+	        	          location: location,
+	        	          radius: '500',
+	        	          query: formData.name
+	        	        };
+
+	        	        service = new google.maps.places.PlacesService(map);
+	        	        service.textSearch(request, callback);
+	        	        // var marker = new google.maps.Marker({
+	        	        //     map: map,
+	        	        //     position: results[0].geometry.location
+	        	        // });
+	        	      } else {
+	        	        alert("Geocode was not successful for the following reason: " + status);
+	        	      }
+	        	    });
+	        } else if(navigator.geolocation) {
+	      navigator.geolocation.getCurrentPosition(function(position) {
+	        var pos = new google.maps.LatLng(position.coords.latitude,
+	                                         position.coords.longitude);
+
+	        var infowindow = new google.maps.InfoWindow({
+	          map: map,
+	          position: pos,
+	          content: 'Your location.'
+	        });
+
+	        map.setCenter(pos);
+	        location = pos;
+
+	        var request = {
+	          location: location,
+	          radius: '500',
+	          query: formData.name
+	        };
+
+	        service = new google.maps.places.PlacesService(map);
+	        service.textSearch(request, callback);
+	  
+	      });
+	    } else {
+
+	      var request = {
+	        location: location,
+	        radius: '500',
+	        query: formData.name
+	      };
+
+	      service = new google.maps.places.PlacesService(map);
+	      service.textSearch(request, callback);
+	    }
 	}
 
 	function callback(results, status) {
@@ -86,8 +141,8 @@ $(function(){
 
 	function callback2(place, status) {
 	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	    console.log(place.name + " " + place.formatted_phone_number)
-	    console.log(place)
+	    // console.log(place.name + " " + place.formatted_phone_number)
+	    // console.log(place)
 	    createResultsDiv(place);
 	  }
 	}
@@ -98,7 +153,7 @@ $(function(){
 			var name4Class = encodeURI(aResult.name)
 			var one = $('#savedPlacesEnd').append('<div id=' + phoneId + ' ' + 'class=' + name4Class + '><h3>' + aResult.name + '</h3> <a id=toggle>see more</a></div>')
 			var div = $('#'+ phoneId)
-			console.log(div)
+			// console.log(div)
 			var gPrice; 
 
 			if(aResult.price_level){
@@ -148,10 +203,10 @@ $(function(){
 		var str = div.html()
 		var index = str.indexOf('</')
 		str = str.substring(4, index)
-		console.log('HI IM HTML' + str)
+		// console.log('HI IM HTML' + str)
 		toSend.phone = div.attr('id')
 		toSend.name = str;
-		console.log(toSend)
+		// console.log(toSend)
 		// yelpCall(toSend);
 		if(!div.has('#yRating').length){
 			$.ajax({
@@ -178,7 +233,8 @@ $(function(){
 				  	// 	}
 			  		// })
 					// console.log(datas)
-					div.append("<div id=yRating> Yelp Rating: " + datas[0].rating + " (" + datas[0].review_count + " reviews)" +"</div>")
+					if(datas[0])
+						div.append("<div id=yRating> Yelp Rating: " + datas[0].rating + " (" + datas[0].review_count + " reviews)" +"</div>")
 			  		div.append('<div id=address style="display: none;">'+ aResult.formatted_address +'</div>')
 			  		div.append('<div id=phoneNum style="display: none;">Phone: '+ aResult.formatted_phone_number +'</div>')
 			  		
@@ -220,7 +276,7 @@ $(function(){
 	    }
 
 	    var infowindow = new google.maps.InfoWindow(options);
-	    
+
 	    infowindow.setContent(place.name);
 	    infowindow.open(map, this);
 	  });
