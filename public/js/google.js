@@ -213,6 +213,14 @@ $(function(){
 	  });
 
 	  google.maps.event.addListener(marker, 'click', function() {
+	    var options = {
+	    	map: map,
+	    	position: place.geometry.location,
+	    	content: place.name
+	    }
+
+	    var infowindow = new google.maps.InfoWindow(options);
+	    
 	    infowindow.setContent(place.name);
 	    infowindow.open(map, this);
 	  });
