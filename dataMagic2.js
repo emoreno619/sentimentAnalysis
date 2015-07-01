@@ -70,9 +70,9 @@ function reader(call, filename){
   	if(i<9)
   		init()
   	else{
-  		// pResult()
+  		pResult()
   		// call()
-  		justTheScores();
+  		// justTheScores();
 	}
 
 	  // result.loc.forEach(function(a){
