@@ -189,7 +189,8 @@ $(function(){
 		$('#map-canvas').css('width', '70%').css('float', 'right').css('border-radius', '2%')
 		$('#wrapper').css('width', '28%').css('float', 'left')
 		$('#savedPlacesEnd').css('height', '62%').css('overflow-y','auto').css('margin-top', '2%').css('margin-left', '5px')
-		$('#'+ phoneId).css('border', '2px solid black').css('width', '80%').css('margin', '5%').css('float', 'none').css('border-radius', '2%').css('padding-left', '2%')
+		$('#'+ phoneId).css('width', '80%').css('margin', '5%').css('float', 'none').css('border-radius', '5px').css('padding-left', '7%').css('padding-right', '7%').css('padding-bottom', '7%')
+		
 		$('#formStyle label').css('width', '50%').css('padding-top', '3%').css('padding-left', '3%')
 		$('#formStyle input').css('width', '90%').css('margin-left', '5%')
 		$('#submitButton').css('padding-top', '3%').css('padding-bottom', '3%')
