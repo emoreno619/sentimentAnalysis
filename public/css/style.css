@@ -33,13 +33,13 @@ h4{
 	max-height: 10%;
 	overflow-x:auto;
     overflow-y:hidden;
+    margin-bottom: 5px;
 }
 
 #savedPlacesEnd div{
 	background-color: #B45584;
 	color: ivory;
 	box-shadow: 3px 2px 2px #000;
-
 }
 
 #savedPlacesEnd div h3{
@@ -90,6 +90,7 @@ h4{
 #savedPlacesEnd{
 	margin-top: 2px;
 	margin-right: 4px;
+	max-height: 60%;
 	border-radius: 5px;
 }
 
