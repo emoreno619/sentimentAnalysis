@@ -13,7 +13,7 @@ var reviewsArray;
 
 
 var searchUrl = 'http://www.yelp.com/search?find_desc='
-var searchWord = 'craft+beer'
+var searchWord = 'pasta'
 var searchString = '&find_loc=San+Francisco%2C+CA&ns=1'
 var intId;
 var intId2;
@@ -136,7 +136,7 @@ function callback(){
 					} 
 					else {
 						var toSave = JSON.stringify(reviews);
-						fs.appendFile("/tmp/reviewData9", toSave, function(err) {
+						fs.appendFile("/tmp/reviewData12", toSave, function(err) {
 						    if(err) {
 						        return console.log(err);
 						    }

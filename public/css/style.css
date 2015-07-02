@@ -2,8 +2,119 @@ html, body {
 	height: 100%;
 	margin: 0px;
 	padding: 0px
+	background-color: #B45584;
+}
+
+body {
+	background-color: #B45584;	
+}
+
+h4{
+	margin-left: 2%;
+	color: ivory;
+	text-shadow:
+	-1px -1px 0 #000,
+	1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
+
+}
+
+#wrapper{
+	margin-top: 3px;
+	background-color: #328787;
+	box-shadow: 4px 3px 3px #000;
+	height: 72%
+}
+
+#savedPlaces{
+	background-color: #B45584;	
+	padding-left: 5%;
+	max-height: 10%;
+	overflow-x:auto;
+    overflow-y:hidden;
+}
+
+#savedPlacesEnd div{
+	background-color: #B45584;
+	color: ivory;
+	box-shadow: 3px 2px 2px #000;
+
+}
+
+#savedPlacesEnd div h3{
+	color: ivory;
+	text-decoration: underline;
+	text-shadow:
+	-1px -1px 0 #000,
+	1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
+}
+
+#savedPlaces p a{
+	color: ivory;
+	text-shadow:
+	-.5px -.5px 0 #000,
+	.5px -.5px 0 #000,
+	-.5px .5px 0 #000,
+	.5px .5px 0 #000;
+
+}
+
+#savedPlaces p {
+	float: left;
+	background-color: #328787;
+	width: 15%;
+	margin-left: 1%;
+	margin-bottom: 50%;
+	border-radius: 8px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 5px;
+	margin-bottom: 1%;
+	padding-top: 5px;
+	box-shadow: 2px 2px 2px #000;
+	text-align: center;
+	
+}
+
+#savedPlacesEnd div a{
+	background-color: ivory;
+	border-radius: 15px;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-shadow: 2px 2px 2px #000;
+}
+
+#savedPlacesEnd{
+	margin-top: 2px;
+	margin-right: 4px;
+	border-radius: 5px;
+}
+
+#wrapper{
+	border-radius: 5px;
+}
+
+#formStyle{
+	margin-left: 3%;
+	margin-top: 2.5%;
+	margin-bottom: 5%;
+	background-color: #B45584;
+	color: ivory;
+	box-shadow: 3px 2px 2px #000;
+}
+
+#formStyle input{
+	border-radius: 5px;
+}
+
+#submitButton{
+	color : black;
 }
 
 #map-canvas {
-	height: 500px;
+	height: 73%;
+	box-shadow: 4px 3px 3px #000;
 }

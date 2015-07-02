@@ -20,7 +20,7 @@ $(function(){
 	var divArr = []
 
 	$('#savedPlaces p').css('max-height', '10%').css('padding', '2px')
-	$('#savedPlaces').css('margin-bottom', '10px').css('border', '2px solid black').css('border-radius', '3px')
+	
 	$('#nav p').css('float', 'none')
 
 	$('#searchPlaceForm').submit(function(e){
@@ -185,9 +185,10 @@ $(function(){
 	}
 
 	function styleThoseResults(phoneId){
-		$('#map-canvas').css('width', '70%').css('float', 'right').css('border', '2px solid black').css('border-radius', '2%')
+
+		$('#map-canvas').css('width', '70%').css('float', 'right').css('border-radius', '2%')
 		$('#wrapper').css('width', '28%').css('float', 'left')
-		$('#savedPlacesEnd').css('height', '305px').css('overflow-y','auto').css('margin-top', '2%')
+		$('#savedPlacesEnd').css('height', '62%').css('overflow-y','auto').css('margin-top', '2%').css('margin-left', '5px')
 		$('#'+ phoneId).css('border', '2px solid black').css('width', '80%').css('margin', '5%').css('float', 'none').css('border-radius', '2%').css('padding-left', '2%')
 		$('#formStyle label').css('width', '50%').css('padding-top', '3%').css('padding-left', '3%')
 		$('#formStyle input').css('width', '90%').css('margin-left', '5%')
