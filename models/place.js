@@ -6,7 +6,10 @@ var Review = require("./review")
 var placeSchema = new mongoose.Schema({
 
 						creator: String,
-						name: String,
+						name: {
+							type: String,
+							required: true
+						},
 						address: String,
 						city: String,
 						state: String,
