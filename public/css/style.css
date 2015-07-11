@@ -30,10 +30,11 @@ h4{
 #savedPlaces{
 	background-color: #B45584;	
 	padding-left: 5%;
-	
-	overflow-x:auto;
-    overflow-y:hidden;
-    margin-bottom: 5px;
+	padding-top: 5px;
+	height: 9.5%;
+	overflow-x:hidden;
+    overflow-y:auto;
+    margin-bottom: 8px;
     font-family: 'Arial', sans-serif;
 }
 

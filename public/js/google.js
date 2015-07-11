@@ -160,10 +160,10 @@ $(function(){
 			// console.log(aResult)
 			if(!div.hasClass('noRating')){
 				var classes = div.attr('class').split(" ")
-				div.append('<div id=gRating> <a target="_blank" href="'+ aResult.url +'">Google+ Rating:</a>  ' + classes[1] + ' (' + classes[2] + ' reviews)</div>')
+				div.append('<div id=gRating> <a target="_blank" href="'+ aResult.url +'">Google+ Rating:</a>   ' + classes[1] + ' (' + classes[2] + ' reviews)</div>')
 
 			} else {
-				div.append('<div id=gRating> <a href="/404"> Google+ Rating:</a> No Rating </div>')
+				div.append('<div id=gRating> <a href="/404"> Google+ Rating:</a>  No Rating </div>')
 			}
 
 			ajaxYelpShenanigans(div, aResult,phoneId);
