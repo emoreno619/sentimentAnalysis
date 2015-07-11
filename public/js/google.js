@@ -1,5 +1,4 @@
-//TODO 1) Make names in search results into links to show page or marker?... on show page, include yelp and g+ reviews, more details like hours
-// 	   2) Maps stuff....allow location to be set in form, fix markers, get browser location
+//TODO 1) Make names in saved places into links to show page... on show page, include yelp and g+ reviews, more details like hours
 // 	   3) Fix header so that favorite (i.e., saved) locations are shown horizontally...allow horizontal scroll
 // 	   4) Show logged in username on each page and log in/out as appropriate
 // 	   5) Include 'Is Open' info in search results 
@@ -22,20 +21,6 @@ $(function(){
 	$('#savedPlaces p').css('padding', '2px')
 	
 	$('#nav p').css('float', 'none')
-
-	$('#searchPlaceForm').submit(function(e){
-		e.preventDefault();
-		ids = []
-		$('.aPlace').remove()
-		formData.name = $('#name').val();
-		//need to create google.maps.LatLng object from city search to be stored
-		//request.location below and map.center
-		formData.city = $('#city').val();
-		
-
-		initialize();
-	})
-
 
 	function initialize() {
 	  
@@ -151,7 +136,10 @@ $(function(){
 		if (aResult.formatted_phone_number){
 			var phoneId = aResult.formatted_phone_number.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~() ]/g,"")
 			var name4Class = encodeURI(aResult.name)
-			var one = $('#savedPlacesEnd').append('<div id=' + phoneId + ' ' + 'class=' + name4Class + '><h3><a id=aPlaceHead href="'+ aResult.website+ '">' + aResult.name + '</a></h3> <a id=toggle>see more</a></div>')
+			if (aResult.website)
+				var one = $('#savedPlacesEnd').append('<div id=' + phoneId + ' ' + 'class=' + name4Class + '><h3><a target="_blank" id=aPlaceHead href="'+ aResult.website+ '">' + aResult.name + '</a></h3> <a id=toggle>see more</a></div>')
+			else
+				var one = $('#savedPlacesEnd').append('<div id=' + phoneId + ' ' + 'class=' + name4Class + '><h3><a target="_blank" id=aPlaceHead href="/404">' + aResult.name + '</a></h3> <a id=toggle>see more</a></div>')
 			var div = $('#'+ phoneId)
 			// console.log(div)
 			var gPrice; 
@@ -175,7 +163,7 @@ $(function(){
 				div.append('<div id=gRating> <a target="_blank" href="'+ aResult.url +'">Google+ Rating:</a>  ' + classes[1] + ' (' + classes[2] + ' reviews)</div>')
 
 			} else {
-				div.append("<div id=gRating> Google+ Rating: No Rating </div>")
+				div.append('<div id=gRating> <a href="/404"> Google+ Rating:</a> No Rating </div>')
 			}
 
 			ajaxYelpShenanigans(div, aResult,phoneId);
@@ -268,10 +256,18 @@ $(function(){
 		}
 	})
 
-		// $("body").on("click", "#gRating", function(event){
-		// 	div = $(this)
+	$('#searchPlaceForm').submit(function(e){
+		e.preventDefault();
+		ids = []
+		$('.aPlace').remove()
+		formData.name = $('#name').val();
+		//need to create google.maps.LatLng object from city search to be stored
+		//request.location below and map.center
+		formData.city = $('#city').val();
+		
 
-		// })
+		initialize();
+	})
 
 	// look into 'debouncing?' (part of underscore) to handle delay 
 
