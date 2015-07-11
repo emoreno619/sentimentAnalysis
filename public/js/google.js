@@ -19,7 +19,7 @@ $(function(){
 	var ids = []
 	var divArr = []
 
-	$('#savedPlaces p').css('max-height', '10%').css('padding', '2px')
+	$('#savedPlaces p').css('padding', '2px')
 	
 	$('#nav p').css('float', 'none')
 
@@ -151,7 +151,7 @@ $(function(){
 		if (aResult.formatted_phone_number){
 			var phoneId = aResult.formatted_phone_number.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~() ]/g,"")
 			var name4Class = encodeURI(aResult.name)
-			var one = $('#savedPlacesEnd').append('<div id=' + phoneId + ' ' + 'class=' + name4Class + '><h3>' + aResult.name + '</h3> <a id=toggle>see more</a></div>')
+			var one = $('#savedPlacesEnd').append('<div id=' + phoneId + ' ' + 'class=' + name4Class + '><h3><a id=aPlaceHead href="'+ aResult.website+ '">' + aResult.name + '</a></h3> <a id=toggle>see more</a></div>')
 			var div = $('#'+ phoneId)
 			// console.log(div)
 			var gPrice; 
@@ -169,10 +169,10 @@ $(function(){
 				$('#'+ phoneId).attr('class', 'aPlace noRating')
 
 	
-
+			// console.log(aResult)
 			if(!div.hasClass('noRating')){
 				var classes = div.attr('class').split(" ")
-				div.append("<div id=gRating> Google+ Rating: " + classes[1] + " (" + classes[2] + " reviews)</div>")
+				div.append('<div id=gRating> <a target="_blank" href="'+ aResult.url +'">Google+ Rating:</a>  ' + classes[1] + ' (' + classes[2] + ' reviews)</div>')
 
 			} else {
 				div.append("<div id=gRating> Google+ Rating: No Rating </div>")
@@ -188,13 +188,13 @@ $(function(){
 
 		$('#map-canvas').css('width', '70%').css('float', 'right').css('border-radius', '2%')
 		$('#wrapper').css('width', '28%').css('float', 'left')
-		$('#savedPlacesEnd').css('height', '62%').css('overflow-y','auto').css('margin-top', '2%').css('margin-left', '5px')
+		$('#savedPlacesEnd').css('overflow-y','auto').css('margin-top', '2%').css('margin-left', '5px')
 		$('#'+ phoneId).css('width', '80%').css('margin', '5%').css('float', 'none').css('border-radius', '5px').css('padding-left', '7%').css('padding-right', '7%').css('padding-bottom', '7%')
 		
 		$('#formStyle label').css('width', '50%').css('padding-top', '3%').css('padding-left', '3%')
 		$('#formStyle input').css('width', '90%').css('margin-left', '5%')
 		$('#submitButton').css('padding-top', '3%').css('padding-bottom', '3%')
-		$('#formStyle').css('margin-right', '4%').css('border', '2px solid black').css('border-radius', '2%')
+		$('#formStyle').css('margin-right', '4%').css('border', '2px solid black').css('border-radius', '2%').css('max-height', '100%')
 	}
 
 	function ajaxYelpShenanigans(div, aResult,phoneId){
@@ -208,6 +208,13 @@ $(function(){
 		// console.log('HI IM HTML' + str)
 		toSend.phone = div.attr('id')
 		toSend.name = str;
+		
+		var str2 = aResult.formatted_address.split(',')[1]
+		console.log(str2)
+		if(formData.city)
+			toSend.location = formData.city
+		else
+			toSend.location = str2
 		// console.log(toSend)
 		// yelpCall(toSend);
 		if(!div.has('#yRating').length){
@@ -236,7 +243,7 @@ $(function(){
 			  		// })
 					// console.log(datas)
 					if(datas[0])
-						div.append("<div id=yRating> Yelp Rating: " + datas[0].rating + " (" + datas[0].review_count + " reviews)" +"</div>")
+						div.append('<div id=yRating> <a target="_blank" href="'+ datas[0].url +'">Yelp Rating:</a> ' + datas[0].rating + ' (' + datas[0].review_count + ' reviews)' +'</div>')
 			  		div.append('<div id=address style="display: none;">'+ aResult.formatted_address +'</div>')
 			  		div.append('<div id=phoneNum style="display: none;">Phone: '+ aResult.formatted_phone_number +'</div>')
 			  		
@@ -245,8 +252,8 @@ $(function(){
 		}
 	}
 
-	$("body").on("click", ".aPlace", function(event){
-		div = $(this)
+	$("body").on("click", "#toggle", function(event){
+		div = $(this).parent()
 		if(div.children('#toggle').html() == 'see more'){
 			div.children('#yRating').show()
 			div.children('#toggle').html('see less')
@@ -260,6 +267,11 @@ $(function(){
 			// 	div.html(div.html() + ' <a id=toggle>see more</a>')
 		}
 	})
+
+		// $("body").on("click", "#gRating", function(event){
+		// 	div = $(this)
+
+		// })
 
 	// look into 'debouncing?' (part of underscore) to handle delay 
 

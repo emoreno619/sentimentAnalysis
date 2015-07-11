@@ -433,7 +433,7 @@ app.post('/yelp', function(req,res){
 
 	
 	// See http://www.yelp.com/developers/documentation/v2/search_api
-	yelp.search({term: req.body.name, location: "San Francisco"}, function(error, data) {
+	yelp.search({term: req.body.name, location: req.body.location}, function(error, data) {
 	  console.log(error);
 	  console.log("OAKLAND DATA")
 	  // STORE this url.

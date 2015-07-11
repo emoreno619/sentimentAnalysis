@@ -11,38 +11,59 @@ var AlchemyAPI = require('./alchemyapi');
 var alchemyapi = new AlchemyAPI();
 var reviewsArray;
 
-
-var searchUrl = 'http://www.yelp.com/search?find_desc='
-var searchWord = 'pasta'
+var baseUrl = 'http://www.yelp.com'
+var searchUrl = '/search?find_desc='
+var searchWord = 'fish'
 var searchString = '&find_loc=San+Francisco%2C+CA&ns=1'
 var intId;
 var intId2;
 var locArr = []
+var searchResultsCounter = 0;
+var reviewPageCounter = 1;
 
+var arrLocArr = []
 
 var reviews = {}
 reviews.arr = []
 
+var nextSearchUrls = ""
+
 // Finds URLs on Yelp of 10 locations that match the searchWord, stores URLs in locArr[]
 // Calls 'callMany()', intermittently 
 
-function getUrls(call){
-	console.log("2")
-	searchString = searchWord + searchString
-	searchUrl += searchString
+function getUrls(call,cont){
+	var diffLocArr = []
+	if(!cont){
+		searchString = searchWord + searchString
+		baseUrl = baseUrl + searchUrl + searchString
+	} else {
+		baseUrl = 'http://www.yelp.com'
+		baseUrl += nextSearchUrls
+	}
 
-	request(searchUrl, function (error, response, html) {
+	searchResultsCounter++;
+
+	request(baseUrl, function (error, response, html) {
 	  if (!error && response.statusCode == 200) {
 	    var $ = cheerio.load(html);
 	    // console.log(html);
 	    $('a.biz-name').each(function(i, element){
 	    	var a = $(this)
 	    	locArr.push(a.attr('href'))
+	    	diffLocArr.push(a.attr('href'))
 	    	// console.log(a.attr('href'))
 	    })
-	    console.log(locArr)
+	    // console.log(locArr)
 
-	    call(callback);
+	    arrLocArr.push(diffLocArr);
+
+	    if(searchResultsCounter < 3){
+	    	nextSearchUrls = $('span.current').parent().next('li').children('a').attr('href')
+	    	getUrls(call,true)
+	    } else {
+	    	console.log(arrLocArr)
+	    }
+	    // call(callback);
 	    
 	  } else {
 	  	console.log(error);
@@ -63,11 +84,13 @@ function getUrls(call){
 // stores their respective full url and array of reviews (locReviews). Also, this function
 // intermittently calls callback().
 
-function requestForALoc(call2){
-	// if(counter != locArr.length -1) {
+function requestForALoc(call2, cont){
+	
 		if(counter == locArr.length){
 			call2()
 		} else {
+
+
 			var url = 'http://www.yelp.com'
 			
 			url += locArr[counter]
@@ -75,6 +98,11 @@ function requestForALoc(call2){
 			var locReviews = []
 			var locSentiment = []
 			
+			if(cont){
+				urlAddition = reviewPageCounter * 40;
+				url = url + '?start=' + urlAddition
+				reviewPageCounter++;
+			}
 
 			request(url, function (error, response, html) {
 
@@ -96,10 +124,8 @@ function requestForALoc(call2){
 			    reviewsArray = reviews.arr[aCounter]["locReviews"]
 			    locRef = locArr[counter] 
 
-			    // console.log(locReviews.length)
-			    // console.log(locReviews[40])
-			    // if(counter != 0)
-			    	call2()
+			    
+			    	// call2()
 
 			  } else {
 			    	console.log(error)
@@ -136,7 +162,7 @@ function callback(){
 					} 
 					else {
 						var toSave = JSON.stringify(reviews);
-						fs.appendFile("/tmp/reviewData12", toSave, function(err) {
+						fs.appendFile("/tmp/reviewData14", toSave, function(err) {
 						    if(err) {
 						        return console.log(err);
 						    }

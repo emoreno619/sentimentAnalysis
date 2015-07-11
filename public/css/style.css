@@ -1,8 +1,8 @@
 html, body {
 	height: 100%;
 	margin: 0px;
-	padding: 0px
-	background-color: #B45584;
+	padding: 0px;
+	font-family: 'Arial Black', sans-serif;
 }
 
 body {
@@ -13,10 +13,10 @@ h4{
 	margin-left: 2%;
 	color: ivory;
 	text-shadow:
-	-1px -1px 0 #000,
-	1px -1px 0 #000,
-	-1px 1px 0 #000,
-	1px 1px 0 #000;
+	-2px -2px 0 #000,
+	2px -2px 0 #000,
+	-2px 2px 0 #000,
+	2px 2px 0 #000;
 
 }
 
@@ -24,16 +24,17 @@ h4{
 	margin-top: 3px;
 	background-color: #328787;
 	box-shadow: 4px 3px 3px #000;
-	height: 72%
+	height: 70%;
 }
 
 #savedPlaces{
 	background-color: #B45584;	
 	padding-left: 5%;
-	max-height: 10%;
+	
 	overflow-x:auto;
     overflow-y:hidden;
     margin-bottom: 5px;
+    font-family: 'Arial', sans-serif;
 }
 
 #savedPlacesEnd div{
@@ -41,6 +42,7 @@ h4{
 	color: ivory;
 	box-shadow: 3px 2px 2px #000;
 	padding-top: 1%;
+	font-family: 'Arial', sans-serif;
 }
 
 #savedPlacesEnd div div{
@@ -51,18 +53,23 @@ h4{
 	margin-top: 13px;	
 }
 
-#savedPlacesEnd div h3{
+
+
+#savedPlacesEnd div h3 a{
 	color: ivory;
+	
+	font-family: 'Arial Black', sans-serif;
 	text-decoration: underline;
 	text-shadow:
-	-1px -1px 0 #000,
-	1px -1px 0 #000,
-	-1px 1px 0 #000,
-	1px 1px 0 #000;
+	-2px -2px 0 #000,
+	2px -2px 0 #000,
+	-2px 2px 0 #000,
+	2px 2px 0 #000;
 }
 
 #savedPlaces p a{
 	color: ivory;
+	font-size: 100%;
 	text-shadow:
 	-.5px -.5px 0 #000,
 	.5px -.5px 0 #000,
@@ -85,22 +92,51 @@ h4{
 	padding-top: 5px;
 	box-shadow: 1px 1px 1px #000;
 	text-align: center;
+	height: 22px;
 	
 }
 
-#savedPlacesEnd div a{
+#aPlaceHead{
+	background-color: #328787;
+	font-size: 60%;
+	border-radius: 10px;
+	padding: 5px;
+	width: 100%;
+	box-shadow: 2px 2px 2px #000;
+	margin-bottom: 10px;	
+}
+
+#toggle {
 	background-color: ivory;
 	border-radius: 15px;
 	padding-left: 5px;
 	padding-right: 5px;
 	box-shadow: 2px 2px 2px #000;
-	margin-bottom: 10px;	
+	margin-top: 10px;
+}
+
+#yRating a{
+	background-color: ivory;
+	border-radius: 15px;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-shadow: 2px 2px 2px #000;
+	margin-top: 10px;
+}
+
+#gRating a{
+	background-color: ivory;
+	border-radius: 15px;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-shadow: 2px 2px 2px #000;
+	margin-top: 10px;
 }
 
 #savedPlacesEnd{
 	margin-top: 2px;
 	margin-right: 4px;
-	max-height: 60%;
+	height: 55%;
 	border-radius: 5px;
 }
 
@@ -127,6 +163,6 @@ h4{
 }
 
 #map-canvas {
-	height: 73%;
+	height: 71%;
 	box-shadow: 4px 3px 3px #000;
 }
