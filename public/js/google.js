@@ -1,5 +1,5 @@
 //TODO 1) Make names in saved places into links to show page... on show page, include yelp and g+ reviews, more details like hours
-// 	   3) Fix header so that favorite (i.e., saved) locations are shown horizontally...allow horizontal scroll
+// 	   2) Make "About" page
 // 	   4) Show logged in username on each page and log in/out as appropriate
 // 	   5) Include 'Is Open' info in search results 
 // 	   6) Continue with data sentiment stuff...include reviews for multiple pages in scrape? Include G+ reviews for sentiment?
