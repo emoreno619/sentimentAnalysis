@@ -50,18 +50,28 @@ function getUrls(call,cont){
 	    $('a.biz-name').each(function(i, element){
 	    	var a = $(this)
 	    	locArr.push(a.attr('href'))
-	    	diffLocArr.push(a.attr('href'))
+
+	    	diffLocArr.push([a.attr('href')])
 	    	// console.log(a.attr('href'))
 	    })
 	    // console.log(locArr)
 
+	    $('span.review-count').each(function(i, element){
+	    	var a = $(this)
+	    	// locArr.push(a.attr('href'))
+
+	    	diffLocArr[i].push(parseInt(a.html()))
+	    	// console.log(a.attr('href'))
+	    })
+
 	    arrLocArr.push(diffLocArr);
 
-	    if(searchResultsCounter < 3){
+	    if(searchResultsCounter < 1){
 	    	nextSearchUrls = $('span.current').parent().next('li').children('a').attr('href')
 	    	getUrls(call,true)
 	    } else {
 	    	console.log(arrLocArr)
+	    	// call(callback, true);
 	    }
 	    // call(callback);
 	    
@@ -99,9 +109,13 @@ function requestForALoc(call2, cont){
 			var locSentiment = []
 			
 			if(cont){
+				// if (reviewPageCounter <= 24 && reviewPageCounter <= Math.floor(reviewCount / 40))
+				// actually, this is the limit...but gotta keep it under 1000 ...Math.floor(reviewCount / 40)
 				urlAddition = reviewPageCounter * 40;
 				url = url + '?start=' + urlAddition
 				reviewPageCounter++;
+			} else {
+				reviewPageCounter = 1;
 			}
 
 			request(url, function (error, response, html) {

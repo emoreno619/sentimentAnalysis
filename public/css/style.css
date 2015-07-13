@@ -2,48 +2,48 @@ html, body {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
-	font-family: 'Arial Black', sans-serif;
+	font-family: 'Lucida Sans Unicode', sans-serif;
 }
 
 body {
-	background-color: #B45584;	
+	background-color: #011661;	
 }
 
 h4{
 	margin-left: 2%;
 	color: ivory;
-	text-shadow:
+	/*text-shadow:
 	-2px -2px 0 #000,
 	2px -2px 0 #000,
 	-2px 2px 0 #000,
-	2px 2px 0 #000;
+	2px 2px 0 #000;*/
 
 }
 
 #wrapper{
 	margin-top: 3px;
-	background-color: #328787;
+	background-color: #79B7A7;
 	box-shadow: 4px 3px 3px #000;
 	height: 70%;
 }
 
 #savedPlaces{
-	background-color: #B45584;	
+	background-color: #011661;	
 	padding-left: 5%;
 	padding-top: 5px;
 	height: 9.5%;
 	overflow-x:hidden;
     overflow-y:auto;
     margin-bottom: 8px;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Lucida Sans Unicode', sans-serif;
 }
 
 #savedPlacesEnd div{
-	background-color: #B45584;
+	background-color: #011661;
 	color: ivory;
 	box-shadow: 3px 2px 2px #000;
 	padding-top: 1%;
-	font-family: 'Arial', sans-serif;
+	font-family: 'Lucida Sans Unicode', sans-serif;
 }
 
 #savedPlacesEnd div div{
@@ -59,29 +59,29 @@ h4{
 #savedPlacesEnd div h3 a{
 	color: ivory;
 	
-	font-family: 'Arial Black', sans-serif;
+	font-family: 'Lucida Sans Unicode', sans-serif;
 	text-decoration: underline;
-	text-shadow:
+	/*text-shadow:
 	-2px -2px 0 #000,
 	2px -2px 0 #000,
 	-2px 2px 0 #000,
-	2px 2px 0 #000;
+	2px 2px 0 #000;*/
 }
 
 #savedPlaces p a{
-	color: ivory;
+	color: #011661;
 	font-size: 100%;
-	text-shadow:
+	/*text-shadow:
 	-.5px -.5px 0 #000,
 	.5px -.5px 0 #000,
 	-.5px .5px 0 #000,
-	.5px .5px 0 #000;
+	.5px .5px 0 #000;*/
 
 }
 
 #savedPlaces p {
 	float: left;
-	background-color: #328787;
+	background-color: #FF9E32;
 	width: 15%;
 	margin-left: 1%;
 	margin-bottom: 50%;
@@ -98,7 +98,7 @@ h4{
 }
 
 #aPlaceHead{
-	/*background-color: #328787;*/
+	/*background-color: #79B7A7;*/
 	font-size: 100%;
 	border-radius: 10px;
 	padding: 5px;
@@ -159,7 +159,7 @@ h4{
 	margin-left: 3%;
 	margin-top: 2.5%;
 	margin-bottom: 5%;
-	background-color: #B45584;
+	background-color: #011661;
 	color: ivory;
 	box-shadow: 2px 1px 1px #000;
 }
