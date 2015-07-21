@@ -97,7 +97,8 @@ function getUrls(call,cont){
 function requestForALoc(call2, cont){
 	
 		if(counter == locArr.length){
-			call2()
+			/// THIS!!! is the switch to turn on sentiment analysis
+			// call2()
 		} else {
 
 
