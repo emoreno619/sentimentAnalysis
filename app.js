@@ -166,7 +166,7 @@ app.get('/places/:place_id/edit', routeMiddleware.ensureCorrectPoster, function(
 app.put('/places/:id', function(req,res){
 	db.Place.findByIdAndUpdate(req.params.id, {name: req.body.name, address: req.body.address, phone: req.body.phone, city: req.body.city, state: req.body.state}, function(err, place){
 		if(err){
-			res.render("places/edit")
+			res.render("places/edit", {place:place})
 		} else {
 			res.redirect('/places')
 		}
