@@ -1,0 +1,20 @@
+<% include ../partials/header2 %>
+  <h1>Review of <%= place.name%></h1>
+  <form action="/places/<%= place.id%>/reviews" method="POST">
+    <div>
+      <label for="title">Title:</label>
+      <input autofocus  type="text" name="title" id="title">
+    </div>
+    <div>
+      <label for="body">Body:</label>
+      <input autofocus  type="text" name="body" id="body">
+    </div>
+    <div>
+      <label for="rating">Rating: (1 - 5, e.g., 3.7) </label>
+      <input type="text" name="rating" id="rating">
+    </div>
+    <div>
+      <input type="submit" value="Add!">
+    </div>
+  </form>
+<% include ../partials/footer %>

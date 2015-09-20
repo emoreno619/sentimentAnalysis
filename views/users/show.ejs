@@ -1,0 +1,33 @@
+<% include ../partials/header2 %>
+  <h1>More about <%= user.email%>'s Account</h1>
+
+  <h3>
+    Email: <%= user.email%>
+  </h3>
+  <h3>
+    <a href="/users/<%= user.id%>/edit">Edit</a>
+  </h3>
+
+  <h3>Favorite Places</h3>
+    <% var rating = "No rating" %>
+    <% user.favPlaces.forEach(function(favPlace){ %>
+      <% places.forEach(function(aPlace){ if(favPlace == aPlace.id){ %>
+        <h4 class="text-muted"><a href="/favPlaces/<%= favPlace.id %>"><%= aPlace.name%></a>   <%=" Google+ Rating:"%> <% if(aPlace.gRating) {rating = aPlace.gRating} %> <%= rating%>
+          <%=" Yelp Rating:"%> <% if(aPlace.yRating) {rating = aPlace.gRating} %> <%= rating %>   
+          <%=" Our Rating:"%> <% if(aPlace.yourRating) {rating = aPlace.gRating} %> <%= rating %> 
+        </h4>
+      <% }}) %>
+    <% })%>
+
+  <h3>Reviews</h3>
+
+    <% reviews.forEach(function(review){ %>
+      <h4 class="text-muted"><a href="/places/<%= review.place %>/reviews/<%= review.id %>"><%= review.title%></a> Rating: <%= review.rating %></h4>
+    <% })%>
+  <h3>
+    <form action='/users/<%= user.id %>?_method=DELETE' method="POST">
+      <input type="submit" value="DELETE" class="btn btn-danger">
+    </form>
+  </h3>
+
+<% include ../partials/footer %>

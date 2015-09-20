@@ -1,0 +1,18 @@
+<% include ../partials/header2 %>
+<h1>Sign up</h1>
+<form method="POST" action="/signup" >
+  <div class="form-group">
+    <label for="user">Email:    </label>
+      <input type="text" id="email" name="user[email]" class="form-control" autofocus>
+
+  </div>
+  <div class="form-group">
+    <label> Password: </label>
+      <input type="password" id="pass" name="user[password]" class="form-control">
+  </div>
+  <div class="form-group">
+    <input type="submit" value="Sign up" class="btn btn-primary">
+  </div>
+</form>
+<a href="/login">Already have an account? Login in here</a>
+<% include ../partials/footer %>

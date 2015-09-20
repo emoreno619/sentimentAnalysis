@@ -1,0 +1,36 @@
+<% include ../partials/header2 %>
+
+    <h2>Edit a user</h2>
+    <form action='/users/<%= user.id %>?_method=PUT' method="POST">
+      <div class="form-group">
+        <label for="email">email:</label>
+        <input type="text" name="user[email]" id="" class="form-control" value= "<%= user.email%>" autofocus>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Edit email" class ="btn btn-info btn-lg">
+      </div>
+    </form>
+  
+   <h3>Favorite Places</h3>
+    <% var rating = "No rating" %>
+    <% user.favPlaces.forEach(function(favPlace){ %>
+      <% places.forEach(function(aPlace){ if(favPlace == aPlace.id){ %>
+        <h4 class="text-muted"><a href="/favPlaces/<%= favPlace.id %>"><%= aPlace.name%></a>   <%=" Google+ Rating:"%> <% if(aPlace.gRating) {rating = aPlace.gRating} %> <%= rating%>
+          <%=" Yelp Rating:"%> <% if(aPlace.yRating) {rating = aPlace.gRating} %> <%= rating %>   
+          <%=" Our Rating:"%> <% if(aPlace.yourRating) {rating = aPlace.gRating} %> <%= rating %> 
+        </h4>
+      <% }}) %>
+    <% })%>
+
+  <h3>Reviews</h3>
+
+    <% reviews.forEach(function(review){ %>
+      <h4 class="text-muted"><a href="/places/<%= review.place %>/reviews/<%= review.id %>"><%= review.title%></a> Rating: <%= review.rating %></h4>
+    <% })%>
+  <h3>
+    <form action='/users/<%= user.id %>?_method=DELETE' method="POST">
+      <input type="submit" value="DELETE" class="btn btn-danger">
+    </form>
+  </h3>
+
+<% include ../partials/footer %>

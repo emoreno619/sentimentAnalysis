@@ -1,0 +1,42 @@
+<% include ../partials/header %>
+	<h4>Saved places!</h1>
+	<div id='savedPlaces'>
+		<% places.forEach(function(place){ %>
+			<p>
+				<a href="/places/<%= place._id%>"><%= place.name %></a>
+			</p>
+		<% }) %>
+	</div>
+	<div id="wrapper">
+			<form id='searchPlaceForm' action="/places" method="POST">
+				<div id='formStyle'>
+					<div>
+						<label for="name">Name:</label>
+						<input type="text" name="name" id="name" autofocus>
+					</div>
+					<div>
+						<label for="city">Address, city or location:</label>
+						<input type="text" name="city" id="city">
+					</div>
+					<!-- <div>
+						<label for="phone">Phone:</label>
+						<input type="text" name="phone" id="phone">
+					</div>
+					<div>
+						<label for="gRating">Google+ Rating:</label>
+						<input type="text" name="gRating" id="gRating">
+					</div>
+					<div>
+						<label for="yRating">Yelp Rating:</label>
+						<input type="text" name="yRating" id="yRating">
+					</div> -->
+					<div id='submitButton'>
+						<input type="submit" value="Search!">
+					</div>
+				</div>
+			</form>
+		<div id="savedPlacesEnd">
+		</div>
+	</div>
+	<div id="map-canvas"></div>
+<% include ../partials/footer %>
