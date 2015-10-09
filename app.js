@@ -440,13 +440,19 @@ app.post('/yelp', function(req,res){
 	  // STORE this url.
 	  // CALL scrape.js with this url, to get sentiment scores for its reviews, calculate star-rating based on sentiment scores
 	  // console.log(data.businesses[0].phone);
-	  data.businesses.forEach(function(aPlace){
-	  	// console.log(aPlace)
-	  })
-	  
-	  // console.log( "Name: " + data.businesses[0].name + " Rating: " + data.businesses[0].rating + " Phone: " + data.businesses[0].phone)
 
-	  res.send(data.businesses)
+	  if(data.businesses){
+		  data.businesses.forEach(function(aPlace){
+		  	// console.log(aPlace)
+		  })
+		  
+		  // console.log( "Name: " + data.businesses[0].name + " Rating: " + data.businesses[0].rating + " Phone: " + data.businesses[0].phone)
+
+		  res.send(data.businesses)
+	  } else {
+	  	res.send()
+	  }
+
 	});
 
 	// See http://www.yelp.com/developers/documentation/v2/business
