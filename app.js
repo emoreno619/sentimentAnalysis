@@ -426,10 +426,10 @@ app.post('/yelp', function(req,res){
 	console.log("HEY THERE: " + req.body.name)
 
 	var yelp = require("yelp").createClient({
-	  consumer_key: "KEFLEf4cm0Xw7vzreOAPLw", 
-	  consumer_secret: "-KgYfp8CXRq0tSEd7_XCqYmRQr8",
-	  token: "F0VfgC9G0VPeXYF8Q4aX8lbOgVKvkfVC",
-	  token_secret: "cZe1601_aBo0HYzYzb0hqmEfKBc"
+	  consumer_key: process.env.YELP_KEY, 
+	  consumer_secret: process.env.YELP_SECRET,
+	  token: process.env.YELP_TOKEN,
+	  token_secret: process.env.YELP_TSECRET
 	});
 
 	
